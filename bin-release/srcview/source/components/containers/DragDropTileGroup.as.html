@@ -1,0 +1,576 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DragDropTileGroup.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">containers</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DisplayObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MouseEvent</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flashx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">textLayout</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formats</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Direction</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DragSource</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IUIComponent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IVisualElement</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponentCachePolicy</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CloseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DragEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ResizeEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">managers</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DragManager</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">org</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">osmf</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GatewayChangeEvent</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ResizeMode</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TileGroup</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DragDropTileGroup</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">TileGroup</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tilesPerRow</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 3;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tilesPerColumn</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 3;
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tileWidth</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 400;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tileHeight</span>:<span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 270;
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">indexOfDragged</span> : <span class="ActionScriptDefault_Text">int</span>;
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">childDragged</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptComment">// Stores the visual feedback given to
+</span>        <span class="ActionScriptComment">// the user when dragging
+</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">visualFeedback</span> : <span class="ActionScriptDefault_Text">UIComponent</span>;
+        
+        <span class="ActionScriptComment">// These variables are used in the measure
+</span>        <span class="ActionScriptComment">// method to define the cell size per child,
+</span>        <span class="ActionScriptComment">// each cell being assigned an index in the
+</span>        <span class="ActionScriptComment">// cell grid
+</span>        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">cellWidth</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 400;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">cellHeight</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 270;
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sumWidthPadding</span> : <span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">sumHeightPadding</span> : <span class="ActionScriptDefault_Text">Number</span>;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">borderSize</span> : <span class="ActionScriptDefault_Text">Number</span>;
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_label</span>:<span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">label</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">s</span>:<span class="ActionScriptDefault_Text">String</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">_label</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">s</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">label</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_label</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">DragDropTileGroup</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">x</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptDefault_Text">y</span> <span class="ActionScriptOperator">=</span> 0;
+            
+            <span class="ActionScriptDefault_Text">requestedColumnCount</span> <span class="ActionScriptOperator">=</span> 3;
+            <span class="ActionScriptDefault_Text">requestedRowCount</span> <span class="ActionScriptOperator">=</span> 2;
+            <span class="ActionScriptDefault_Text">orientation</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"rows"</span>;
+            <span class="ActionScriptDefault_Text">columnWidth</span> <span class="ActionScriptOperator">=</span> 400;
+            <span class="ActionScriptDefault_Text">rowHeight</span> <span class="ActionScriptOperator">=</span> 270;
+            <span class="ActionScriptDefault_Text">horizontalGap</span> <span class="ActionScriptOperator">=</span> 10;
+            <span class="ActionScriptDefault_Text">verticalGap</span> <span class="ActionScriptOperator">=</span> 10;
+            
+            <span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_ENTER</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragEnterHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_DROP</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragDropHandler</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_EXIT</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragExitHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_OVER</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragOverHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addElementAt</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">element</span>:<span class="ActionScriptDefault_Text">IVisualElement</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">index</span>:<span class="ActionScriptDefault_Text">int</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">IVisualElement</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tempChild</span> : <span class="ActionScriptDefault_Text">IVisualElement</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addElementAt</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">element</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">index</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">tempChild</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_DOWN</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseDownHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">tempChild</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">elementMouseDownHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> 
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">target</span> : <span class="ActionScriptDefault_Text">DisplayObject</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">DisplayObject</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">currentTarget</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Seeing how at this point the user's mouse interaction may be a drag or click,
+</span>            <span class="ActionScriptComment">// we add listeners for a move and a mouse up. If the mouse up occurs before the
+</span>            <span class="ActionScriptComment">// mouse move, it is registered as a mouse click. Alternatively, if the mouse is moved
+</span>            <span class="ActionScriptComment">// before being released, it is registered as a mouse drag.
+</span>            <span class="ActionScriptComment">//
+</span>            <span class="ActionScriptComment">// Adding these two listeners lets us watch for these two distinct events.
+</span>            
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_UP</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseUpHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_MOVE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseMoveHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        
+        <span class="ActionScriptASDoc">/**
+         * This method sets the child up to be dragged, creates a green sprite for a drag proxy, and adds the current
+         * target in the data source for the DragDropTile to access on a drop.
+         *
+         * The listener to this handle is originally set when the user triggers a MOUSE_DOWN event over a child
+         * of the DragDropTileGroup component. This handler signifies a drag of the component.
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">elementMouseMoveHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">target</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">currentTarget</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hasEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_UP</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_UP</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseUpHandler</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">target</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// We indicate that it is a child of the container being dragged,
+</span>            <span class="ActionScriptComment">// and store its index.
+</span>            <span class="ActionScriptComment">// This is needed for the logic in our findIndex method.
+</span>            
+            <span class="ActionScriptDefault_Text">childDragged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            <span class="ActionScriptDefault_Text">indexOfDragged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getElementIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dragProxy</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">createDragProxy</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ds</span> : <span class="ActionScriptDefault_Text">DragSource</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">DragSource</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">DragManager</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">doDrag</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">ds</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragProxy</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> .5 <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_COMPLETE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragCompleteHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Monitors the movement of the component being dragged over the DragDropTileGroup component so as to
+         * update the visual feedback display to the user.
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dragOverHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">DragEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dragInitiator</span> : <span class="ActionScriptDefault_Text">UIComponent</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// If the dragged component is in fact a child of the container,
+</span>            <span class="ActionScriptComment">// it is removed from the layout and set as invisible. This is
+</span>            <span class="ActionScriptComment">// to then allow the visual feedback to simulate the dragging of
+</span>            <span class="ActionScriptComment">// that component from its current location.
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">dragInitiator</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+                <span class="ActionScriptDefault_Text">dragInitiator</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">includeInLayout</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">indexAt</span> : <span class="ActionScriptDefault_Text">Number</span>;
+            
+            <span class="ActionScriptComment">// Find the index location in the container's cell grid where
+</span>            <span class="ActionScriptComment">// the mouse is currently located relative to the container.
+</span>            
+            <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">findIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contentMouseX</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contentMouseY</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Use this index as the location of the visualFeedback,
+</span>            <span class="ActionScriptComment">// thereby giving the user indication of where the dragged 
+</span>            <span class="ActionScriptComment">// component would be placed relative to the other children
+</span>            <span class="ActionScriptComment">// in the container.
+</span>            
+            <span class="ActionScriptDefault_Text">showFeedback</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Handles a mouse click and removes the listener for a MOUSE_MOVE event as we are not dragging.
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">elementMouseUpHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">curTarget</span> : <span class="ActionScriptDefault_Text">DisplayObject</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">currentTarget</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">curTarget</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">currentTarget</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">DisplayObject</span>;
+                
+                <span class="ActionScriptComment">// Remove this listener and the mouseMove listener added on the mouseDown event
+</span>                <span class="ActionScriptComment">// handler. These listeners, used to determind the mouse action, are no longer
+</span>                <span class="ActionScriptComment">// required as it is apparent that this is a mouseClick action.
+</span>                
+                <span class="ActionScriptDefault_Text">curTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_MOVE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseMoveHandler</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">curTarget</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_UP</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseUpHandler</span> <span class="ActionScriptBracket/Brace">)</span>;                  
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Checks to see if the object being dropped onto the container is one of its
+         * own children, accepting if so. This container is made to only allow the
+         * rearranging of its children, so it does not accept the dragged component
+         * otherwise.
+         * 
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dragEnterHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">DragEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dropTarget</span> : <span class="ActionScriptDefault_Text">DragDropTileGroup</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">DragDropTileGroup</span>;
+            
+            <span class="ActionScriptComment">// Accept the dragged component if it is
+</span>            <span class="ActionScriptComment">// a child of this container
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">DisplayObject</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">DragManager</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">acceptDragDrop</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">dropTarget</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dragDropHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span> 
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">target</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Find the current index the mouse is at in the container's cell grid
+</span>            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">indexAt</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">findIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contentMouseX</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">contentMouseY</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// If the dropped component is a child of the container,
+</span>            <span class="ActionScriptComment">// change the index of the component within the container
+</span>            <span class="ActionScriptComment">// and remove the visual feedback representing the location
+</span>            <span class="ActionScriptComment">// of that component while dragging.
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">setElementIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">removeFeedback</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">invalidateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">findIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">x_Point</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">y_Point</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">Number</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// These variables store the gap between children on the X and Y coordinates
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tileXGap</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">sumWidthPadding</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">borderSize</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tileYGap</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">sumHeightPadding</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">borderSize</span>;
+            
+            <span class="ActionScriptComment">// These variables store the calculated row and column on which the mouse pointer is located.
+</span>            <span class="ActionScriptComment">// The calculation is done by dividing the current position of the mouse by the size allocated to
+</span>            <span class="ActionScriptComment">// the width and height of each tile and its associated border(s) 
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onRow</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">y_Point</span> <span class="ActionScriptOperator">/</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">cellHeight</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">tileYGap</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">onColumn</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">x_Point</span> <span class="ActionScriptOperator">/</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">cellWidth</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">tileXGap</span> <span class="ActionScriptOperator">+</span> 10 <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// The index on which the mouse is located, based on the row and column calculations
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">mouseIndex</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">onRow</span> <span class="ActionScriptOperator">*</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tilesPerRow</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">onColumn</span>;
+            
+            <span class="ActionScriptComment">// This is to compensate for the case where the dragged object is a child of the container and
+</span>            <span class="ActionScriptComment">// is set to false on both includeInLayout and Visible.
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">childDragged</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">indexOfDragged</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">indexOfDragged</span> <span class="ActionScriptOperator">&lt;=</span> <span class="ActionScriptDefault_Text">mouseIndex</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>    
+                <span class="ActionScriptDefault_Text">mouseIndex</span> <span class="ActionScriptOperator">+=</span> 1;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// This ensures that we don't get an out of bounds exception when the mouse is in a row and column pair
+</span>            <span class="ActionScriptComment">// where there is no child.
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">numElements</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">mouseIndex</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">mouseIndex</span> <span class="ActionScriptOperator">&gt;=</span> <span class="ActionScriptDefault_Text">numElements</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">mouseIndex</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">numElements</span> <span class="ActionScriptOperator">-</span> 1;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">mouseIndex</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Shows a dotted line drawing box at the index where the dragged item is to be placed.
+         *
+         * @param indexAt
+         * @param di
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">showFeedback</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">indexAt</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">di</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">di</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptReserved">return</span>;
+            
+            <span class="ActionScriptComment">// Set the feedback's size to the same as the drag initiator's
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">vfWidth</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">di</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cellWidth</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">vfHeight</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Math</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">max</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">di</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">cellHeight</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">drawVisualFeedback</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">vfWidth</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">vfHeight</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getElementIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptReserved">return</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+                
+                <span class="ActionScriptDefault_Text">setElementIndex</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">else</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">addElementAt</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">indexAt</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drawVisualFeedback</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualWidth</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">visualHeight</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Create visual feedback if it does not exist
+</span>            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptDefault_Text">visualWidth</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptDefault_Text">visualHeight</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                
+                <span class="ActionScriptComment">// Set the width and height values of the feedback to the ones passed in
+</span>                
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">visualWidth</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">visualWidth</span>;
+                
+                <span class="ActionScriptComment">// Draw and create the drag proxy.
+</span>                
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">clear</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineStyle</span><span class="ActionScriptBracket/Brace">(</span> 1 <span class="ActionScriptOperator">,</span> 0x000000 <span class="ActionScriptOperator">,</span> 1 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"normal"</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">,</span> 3 <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beginFill</span><span class="ActionScriptBracket/Brace">(</span> 0x00FF00 <span class="ActionScriptOperator">,</span> 1 <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawRoundRect</span><span class="ActionScriptBracket/Brace">(</span> 0 <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">visualWidth</span> <span class="ActionScriptOperator">*</span> 0.9 <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">visualWidth</span> <span class="ActionScriptOperator">*</span> 0.9 <span class="ActionScriptOperator">,</span> 15 <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">endFill</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Creates a UIComponent as a dragProxy for the drag event.
+         *
+         * @param passedWidth
+         * @param passedHeight
+         * @return
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createDragProxy</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">passedComponent</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">UIComponent</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Creates a green rounded rectangular component to be used as the drag proxy.
+</span>            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">greenBlock</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Set the width and height to the same as the component you want to create a
+</span>            <span class="ActionScriptComment">// drag proxy for.
+</span>            
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">passedComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span>;
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">passedComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span>;
+            
+            <span class="ActionScriptComment">// Draw and create the drag proxy.
+</span>            
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">clear</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">lineStyle</span><span class="ActionScriptBracket/Brace">(</span> 1 <span class="ActionScriptOperator">,</span> 0x000000 <span class="ActionScriptOperator">,</span> 1 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"normal"</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptOperator">,</span> 3 <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beginFill</span><span class="ActionScriptBracket/Brace">(</span> 0x00FF00 <span class="ActionScriptOperator">,</span> 1 <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drawRoundRect</span><span class="ActionScriptBracket/Brace">(</span> 0 <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">passedComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">*</span> 0.9 <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">passedComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">*</span> 0.9 <span class="ActionScriptOperator">,</span> 15 <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">greenBlock</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">graphics</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">endFill</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">greenBlock</span>;
+        <span class="ActionScriptBracket/Brace">}</span>    
+        
+        <span class="ActionScriptASDoc">/**
+         * Checks to see if the visual feedback exists and if it is a child of this container,
+         * removing it if so.
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">removeFeedback</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// Check to see if the visualFeedback exists and if it is a child of this container
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">removeElement</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">visualFeedback</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Calls the removeFeedback() method to remove the visual feedback upon exit of the mouse drag
+         * from the container.
+         * 
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dragExitHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">DragEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">removeFeedback</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Finds the max cell width and height of the tile components and sets internal variables to these values.
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">findCellSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptComment">// If user explicitly supplied both a tileWidth and
+</span>            <span class="ActionScriptComment">// a tileHeight, then use those values.
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">widthSpecified</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tileWidth</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">heightSpecified</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">isNaN</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tileHeight</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">widthSpecified</span> <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptDefault_Text">heightSpecified</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">cellWidth</span> <span class="ActionScriptOperator">=</span> 400;
+                <span class="ActionScriptDefault_Text">cellHeight</span> <span class="ActionScriptOperator">=</span> 270;
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// Reset the max child width and height
+</span>            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxChildWidth</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxChildHeight</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> 0;
+            
+            <span class="ActionScriptComment">// Loop over the children to find the max child width and height.
+</span>            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">numElements</span>;
+            
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> 0 ; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">n</span> ; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">child</span> : <span class="ActionScriptDefault_Text">IUIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">IUIComponent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getElementAt</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptComment">// If the child is not included in the layout, skip to the
+</span>                <span class="ActionScriptComment">// next iteration of the loop
+</span>                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">child</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">includeInLayout</span> <span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptReserved">continue</span>;
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">width</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">child</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getExplicitOrMeasuredWidth</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">maxChildWidth</span> <span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptDefault_Text">maxChildWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span>;
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">height</span> : <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">child</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getExplicitOrMeasuredHeight</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">&gt;</span> <span class="ActionScriptDefault_Text">maxChildHeight</span> <span class="ActionScriptBracket/Brace">)</span>
+                    <span class="ActionScriptDefault_Text">maxChildHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// If user explicitly specified either width or height, use the
+</span>            <span class="ActionScriptComment">// user-supplied value instead of the one we computed.
+</span>            <span class="ActionScriptDefault_Text">cellWidth</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">widthSpecified</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">tileWidth</span> : <span class="ActionScriptDefault_Text">maxChildWidth</span>;
+            <span class="ActionScriptDefault_Text">cellHeight</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">heightSpecified</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">tileHeight</span> : <span class="ActionScriptDefault_Text">maxChildHeight</span>;
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Finds the cell sizes of the tile and calculates the number of tiles per row
+         * and per column in the container, to be used for the indexing function.
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptReserved">override</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">measure</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">measure</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Find and set the new max cell size of the components to the internal variables
+</span>            <span class="ActionScriptDefault_Text">findCellSize</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Calculate the padding and border size of the components
+</span>            <span class="ActionScriptDefault_Text">sumWidthPadding</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getStyle</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"paddingLeft"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> .5 <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getStyle</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"paddingRight"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> .5 <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">sumHeightPadding</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getStyle</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"paddingTop"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> .5 <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getStyle</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"paddingBottom"</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">*</span> .5 <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">borderSize</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getStyle</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"borderThickness"</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Calculate the number of tiles per row and column for the indexing function
+</span>            <span class="ActionScriptComment">// Compensate for padding/2 + border around each component
+</span>            <span class="ActionScriptDefault_Text">tilesPerRow</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">width</span> <span class="ActionScriptOperator">/</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">cellWidth</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">sumWidthPadding</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">borderSize</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">tilesPerColumn</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">height</span> <span class="ActionScriptOperator">/</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">cellHeight</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">sumHeightPadding</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">borderSize</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Resets all the logic used in dragging the component and removes the listeners.  
+         *  
+         * @param event
+         * 
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dragCompleteHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">DragEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">target</span> : <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">UIComponent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dragInitiator</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptComment">// Ensure the component exists and is a child of this container
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">contains</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// Remove the listeners used for the drag
+</span>            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hasEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_COMPLETE</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">DragEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DRAG_COMPLETE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">dragCompleteHandler</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hasEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_MOVE</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MOUSE_MOVE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">elementMouseMoveHandler</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptComment">// Reset the state of the component to once again be visible and included in
+</span>            <span class="ActionScriptComment">// the layout of the container, as the index has changed and the visualFeedback
+</span>            <span class="ActionScriptComment">// has been removed.
+</span>            
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            <span class="ActionScriptDefault_Text">target</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">includeInLayout</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            
+            <span class="ActionScriptComment">// Reset these properties for the dragging logic
+</span>            
+            <span class="ActionScriptDefault_Text">childDragged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptDefault_Text">indexOfDragged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">NaN</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

@@ -1,0 +1,65 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>GetServiceDefinitions.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">commands</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getDefinitionByName</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">messaging</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Channel</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">messaging</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">channels</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AMFChannel</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">services</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ServiceFactory</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">GetServiceDefinitions</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">CommandAdapter</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">path</span> : <span class="ActionScriptDefault_Text">String</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">serviceFactory</span> : <span class="ActionScriptDefault_Text">ServiceFactory</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ServiceFactory</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">GetServiceDefinitions</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">path</span> : <span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">path</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">path</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">execute</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">serviceFactory</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getServiceLoader</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">path</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">this</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getData</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param data
+         * 
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">data</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">serviceFactory</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">navURL</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">config</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">nav</span>;
+            <span class="ActionScriptDefault_Text">serviceFactory</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportsURL</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">config</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span>;
+            <span class="ActionScriptDefault_Text">serviceFactory</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportGroupsURL</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">config</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportGroups</span>;
+            
+            <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">GetChartItems</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">execute</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param info
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">override</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">fault</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">info</span> : <span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">fault</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">info</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        
+        
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

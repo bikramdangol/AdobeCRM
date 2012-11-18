@@ -1,0 +1,150 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>CommandAdapter.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">commands</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">EventDispatcher</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getQualifiedClassName</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IMXMLObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">mx_internal</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">logging</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ILogger</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">logging</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Log</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rpc</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">AsyncToken</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rpc</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IResponder</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rpc</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Responder</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rpc</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">FaultEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rpc</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ResultEvent</span>;
+    
+    <span class="ActionScriptReserved">use</span> <span class="ActionScriptReserved">namespace</span> <span class="ActionScriptDefault_Text">mx_internal</span>;
+    
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">CommandAdapter</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">EventDispatcher</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">ICommand</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">IMXMLObject</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">asyncToken</span> : <span class="ActionScriptDefault_Text">AsyncToken</span>;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">logger</span> : <span class="ActionScriptDefault_Text">ILogger</span>;
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">responders</span> : <span class="ActionScriptDefault_Text">Array</span>;
+
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">document</span> : <span class="ActionScriptDefault_Text">Object</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">id</span> : <span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">CommandAdapter</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">logger</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">Log</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getLogger</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">getLoggerFriendlyClassName</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">this</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">responders</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">asyncToken</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">AsyncToken</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param document
+         * @param id
+         * 
+         *                         Add suport for IMXMLObject so that I can be 
+         *                         used in MXML, should you like.
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">initialized</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">document</span> : <span class="ActionScriptDefault_Text">Object</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">id</span> : <span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">id</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">id</span>;
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">document</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">document</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">execute</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param data
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">data</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">ResultEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">data</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">ResultEvent</span>;
+
+            <span class="ActionScriptDefault_Text">logger</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">info</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"Result Received"</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptDefault_Text">asyncToken</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">applyResult</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>; 
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param info
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">fault</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">info</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">FaultEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">info</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">FaultEvent</span>;
+            
+            <span class="ActionScriptDefault_Text">logger</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">warn</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"Fault Received {0}"</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">fault</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">message</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">asyncToken</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">applyFault</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param result
+         * @param fault
+         * @return 
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addCallBack</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">result</span> : <span class="ActionScriptDefault_Text">Function</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">fault</span> : <span class="ActionScriptDefault_Text">Function</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">CommandAdapter</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">responder</span> : <span class="ActionScriptDefault_Text">Responder</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Responder</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">result</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">fault</span> <span class="ActionScriptOperator">!=</span> <span class="ActionScriptReserved">null</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptOperator">?</span> <span class="ActionScriptDefault_Text">fault</span> : <span class="ActionScriptDefault_Text">unhandledFault</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">asyncToken</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addResponder</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">responder</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">this</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param responder
+         * @return 
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">addResponder</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">responder</span> : <span class="ActionScriptDefault_Text">IResponder</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">CommandAdapter</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">asyncToken</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addResponder</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">responder</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">this</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param info    
+         * 
+         *                 Generic fault when you don't want to provide a 
+         *                 fault to the addCallBack method.
+         */</span>
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">unhandledFault</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">info</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * 
+         * @param instance
+         * @return 
+         * 
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">getLoggerFriendlyClassName</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">instance</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">periodReplace</span> : <span class="ActionScriptDefault_Text">RegExp</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">/\./g</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">colonReplace</span> : <span class="ActionScriptDefault_Text">RegExp</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">/::/g</span>;
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">fullname</span> : <span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getQualifiedClassName</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">instance</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">fullname</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">fullname</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">periodReplace</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"_"</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">fullname</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">fullname</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">replace</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">colonReplace</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptString">"_"</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">fullname</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

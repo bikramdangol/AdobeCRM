@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009"
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   xmlns:containers="components.containers.*"
+			   xmlns:components="components.*"
+			   xmlns:nav="components.navigation.*"
+			   xmlns:reportGroups="modules.reportGroups.*"
+			   width="100%" height="100%" 
+			   skinClass="assets.skins.ApplicationBackgroundSkin" 
+			   viewSourceURL="srcview/index.html">
+	
+	<fx:Metadata>
+		[ResourceBundle("crm")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import assets.skins.ApplicationBackgroundSkin;
+			
+			import components.containers.*;
+			import components.navigation.*;
+			import components.navigation.events.ReportsDrawerEvent;
+			import components.reports.DrillDownReportView;
+			
+			import model.ApplicationModel;
+			import model.beans.ReportGroup;
+			import model.beans.ReportItem;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Image;
+			import mx.core.FlexGlobals;
+			import mx.events.ResizeEvent;
+			
+			import services.ServiceFactory;
+			import services.remote.*;
+			
+			import spark.components.Group;
+			import spark.components.Label;
+			import spark.components.NavigatorContent;
+			import spark.components.Scroller;
+			import spark.components.VGroup;
+			import spark.layouts.VerticalLayout;
+			
+			import utils.StaticImports;
+			
+			/** STATIC FIELDS **/
+			
+			// This variable is necessary to ensure that the files
+			// not being referenced but possibly called for instantiation
+			// through getDefinitionByName() are imported
+			
+			private static var staticImports : StaticImports;
+			
+			public var _reportGroups : ArrayCollection;
+			
+			[Bindable(event="reportGroupsChanged")]
+			public function get reportGroups():ArrayCollection
+			{
+				return _reportGroups;
+			}
+			
+			public function set reportGroups(value:ArrayCollection):void
+			{
+				if( value && value != _reportGroups )
+				{
+					_reportGroups = value;
+					createViews();
+					dispatchEvent( new Event("reportGroupsChanged") );
+				}	
+			}
+			
+			// MISC FIELDS //
+			
+			[Bindable]
+			protected var appModel:ApplicationModel = ApplicationModel.getInstance();
+			
+			private var serviceFactory:ServiceFactory = ServiceFactory.getInstance(); 
+			
+			// MISC METHODS //
+			
+			/**
+			 * Creates the views based on the parsed reportGroup beans.
+			 *
+			 */
+			private function createViews():void {
+				
+				// Build a reportsContainer for each of the reportGroup beans
+				// each of which contains one or more reportItem beans
+				for each (var tempReportGroup:ReportGroup in reportGroups) {
+					buildReportsContainer(tempReportGroup);
+				}
+			}
+			
+			/**
+			 * Creates the container in which the reports are displayed based on the reportGroup assigned to it.
+			 *
+			 * @param reportGroup
+			 *
+			 */
+			protected function buildReportsContainer(reportGroup:ReportGroup):void 
+			{
+				if (!reportGroup) {
+					return;
+				}
+				
+				//	Creation of the container
+				var reportsContainer:ExtendedDragDropTileGroup = new ExtendedDragDropTileGroup();
+				reportsContainer.percentHeight = 100;
+				reportsContainer.percentWidth = 100;
+				reportsContainer.minHeight = 100;
+				reportsContainer.minWidth = 100;
+				reportsContainer.rearrangeable=reportGroup.rearrangeable;
+				reportsContainer.addRemoveEnabled=reportGroup.addRemoveEnabled;
+				reportsContainer.styleName = "dragDropTileGroup";
+				
+				var drillDown:DrillDownReportView;
+				
+				//	The number of reports in the group
+				
+				var reportGroupLen:int=reportGroup.reportIds.length;
+				
+				//	Create the reports
+				
+				for (var i:int=0; i < reportGroupLen; i++) {
+					var id:int=reportGroup.reportIds[i];
+					
+					//	Search the reports stored in the appModel for the one required
+					
+					var reportBean:ReportItem=appModel.getReportDataById(id);
+					
+					//	Instantiate and set off its creation by setting
+					//	its reportBean property
+					
+					drillDown=new DrillDownReportView();
+					drillDown.creationPolicy = "all";
+					drillDown.reportBean=reportBean;
+					
+					reportsContainer.addElement(drillDown);
+				}
+				
+				//	If the reportGroup has this property set
+				//	to true, we add the reportsDrawer to add
+				//	new reports to the container
+				
+				if (reportGroup.addRemoveEnabled) {
+					//	If we are adding the reportsDrawer, we create a
+					//	NavigatorContent to house the components to maintain the layout
+					//	This NavigatorContent is then added to the viewstack
+					
+					var tempReportsDrawer:ReportsDrawerView=new ReportsDrawerView();
+					tempReportsDrawer.addEventListener(ReportsDrawerEvent.POPULATE, reportsContainer.populateView);
+					
+					var addRemoveEnabledContainer:NavigatorContent = new NavigatorContent();
+					addRemoveEnabledContainer.layout = new BasicLayout();
+					
+					addRemoveEnabledContainer.label=reportGroup.label;
+					
+					addRemoveEnabledContainer.addElement(tempReportsDrawer);
+					addRemoveEnabledContainer.addElement(reportsContainer);
+					
+					addRemoveEnabledContainer.layout.clipAndEnableScrolling = true;
+					
+					reportsContainer.y = 40;
+					
+					addRemoveEnabledContainer.setStyle('showEffect', showEffect);
+					addRemoveEnabledContainer.setStyle('hideEffect', hideEffect);  
+					
+					vs.addElement( addRemoveEnabledContainer );
+					
+				} else {
+					//	Add the container directly to the viewstack
+					
+					var nc:NavigatorContent = new NavigatorContent();
+					nc.layout = new BasicLayout();
+					nc.label = reportGroup.label;
+					nc.percentHeight = 100;
+					nc.percentWidth = 100; 
+					nc.addElement( reportsContainer );
+					nc.layout.clipAndEnableScrolling = true;
+					
+					nc.setStyle('showEffect', showEffect);
+					nc.setStyle('hideEffect', hideEffect); 
+					
+					vs.addElement( nc );
+				}
+				
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Fade id="showEffect" 
+				duration="200" 
+				alphaFrom="0" 
+				alphaTo="1" />
+		
+		<s:Fade id="hideEffect" 
+				duration="200" 
+				alphaFrom="1" 
+				alphaTo="0" />	
+	</fx:Declarations>
+	
+	<!-- When the reportGroups are loaded, set the property here with this binding. 
+		 This ensurse timing is correct.
+	-->
+	<fx:Binding
+		source="appModel.reportGroups"
+		destination="reportGroups" />
+	
+	<fx:Style source="assets/main.css" />
+	
+	<s:layout>
+		<s:BasicLayout />
+	</s:layout>
+	
+	<mx:Image id="logo" 
+			  styleName="logo"
+			  source="@Embed('/assets/images/DigiPri_logo.png')"/>
+	
+	<s:TabBar id="tabNav" dataProvider="{vs}" top="27" right="100" />
+	
+	<mx:ViewStack id="vs" width="100%" height="100%" top="50"
+				  paddingBottom="10" paddingLeft="25" 
+				  paddingRight="10" paddingTop="5" />
+	
+</s:Application>

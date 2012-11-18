@@ -1,0 +1,84 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>StaticImports.as</title>
+<link rel="stylesheet" type="text/css" href="../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">utils</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetAllClientDealsByCloseDateCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetAllClientDealsByStatusCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetAllClientDealsCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetAllRegionalSalesForecastsCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetAllSalesForecastsCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetClientDealsByStatusTypeId</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetOverallSalesProgressCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetSalesForecastsByUserIdCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetSalesRepSalesForecastsBySalesManagerIdCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetSalesUnitForecastsByRegionIdCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetTop10ClientDealsByRegionIdCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetTop10ClientDealsByStatusTypeID</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetTop10ClientDealsByUserIdCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetTop10ClientDealsCommand</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">commands</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">GetTop10SalesRepForecastsByPercentOfQuotaCommand</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">BarChartReportView</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ColumnChartReportView</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">LineChartReportView</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PieChartReportView</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabularDataReportView</span>;    
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">StaticImports</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptComment">// Static chart imports
+</span>        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">col_chart</span> : <span class="ActionScriptDefault_Text">ColumnChartReportView</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">grid_chart</span> : <span class="ActionScriptDefault_Text">TabularDataReportView</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">pie_chart</span> : <span class="ActionScriptDefault_Text">PieChartReportView</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">bar_chart</span> : <span class="ActionScriptDefault_Text">BarChartReportView</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">line_chart</span> : <span class="ActionScriptDefault_Text">LineChartReportView</span>;
+        
+        <span class="ActionScriptComment">// Static command imports
+</span>        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getAllSalesForecastsCommand</span> : <span class="ActionScriptDefault_Text">GetAllSalesForecastsCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getSalesForecastsByUserIdCommand</span> : <span class="ActionScriptDefault_Text">GetSalesForecastsByUserIdCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getTop10ClientDealsCommand</span> : <span class="ActionScriptDefault_Text">GetTop10ClientDealsCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getTop10ClientDealsByRegionIdCommand</span> : <span class="ActionScriptDefault_Text">GetTop10ClientDealsByRegionIdCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getTop10ClientDealsByStatusTypeIdCommand</span> : <span class="ActionScriptDefault_Text">GetTop10ClientDealsByStatusTypeID</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getAllRegionalSalesForecastsCommand</span> : <span class="ActionScriptDefault_Text">GetAllRegionalSalesForecastsCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getSalesUnitForecastsByRegionIdCommand</span> : <span class="ActionScriptDefault_Text">GetSalesUnitForecastsByRegionIdCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getSalesRepSalesForecastsBySalesManagerIdCommand</span> : <span class="ActionScriptDefault_Text">GetSalesRepSalesForecastsBySalesManagerIdCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getAllClientDealsCommand</span> : <span class="ActionScriptDefault_Text">GetAllClientDealsCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getAllClientDealsByStatusCommand</span> : <span class="ActionScriptDefault_Text">GetAllClientDealsByStatusCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getAllClientDealsByCloseDateCommand</span> : <span class="ActionScriptDefault_Text">GetAllClientDealsByCloseDateCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getClientDealsByStatusCommand</span> : <span class="ActionScriptDefault_Text">GetClientDealsByStatusTypeId</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getTop10ClientDealsByUserId</span> : <span class="ActionScriptDefault_Text">GetTop10ClientDealsByUserIdCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getTop10SalesRepForecastsByPercentOfQuota</span> : <span class="ActionScriptDefault_Text">GetTop10SalesRepForecastsByPercentOfQuotaCommand</span>;
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">getOverallSalesProgress</span> : <span class="ActionScriptDefault_Text">GetOverallSalesProgressCommand</span>;
+        
+        <span class="ActionScriptComment">// Static image embeds
+</span>        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/skins/plusIcon_upIcon.png"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">tilePlaceHolderPlusIcon</span> : <span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/skins/placeHolderWedge.png"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">tilePlaceHolderWedgeIcon</span> : <span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/skins/reportThumbGel.png"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">reportsDrawerRendererOverlayImage</span> : <span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/skins/crosshair_icon.png"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">crosshairIcon</span> : <span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/images/headerPieChart.png"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">headerPieChart</span> : <span class="ActionScriptDefault_Text">Class</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Embed</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"/assets/skins/topBackground.gif"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">topBackground</span> : <span class="ActionScriptDefault_Text">Class</span>;
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span>
+</pre></body>
+</html>

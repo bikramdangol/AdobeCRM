@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of AdobeCRM</title>
+	<nodes>
+		<node label="html-template">
+			<node label="history">
+				<node icon="cssIcon" label="history.css" url="source/html-template/history/history.css.html"/>
+				<node label="history.js" url="source/html-template/history/history.js.txt"/>
+				<node icon="htmlIcon" label="historyFrame.html" url="source/html-template/history/historyFrame.html"/>
+			</node>
+			<node icon="htmlIcon" label="index.template.html" url="source/html-template/index.template.html"/>
+			<node icon="swfIcon" label="playerProductInstall.swf" url="source/html-template/playerProductInstall.swf"/>
+			<node label="swfobject.js" url="source/html-template/swfobject.js.txt"/>
+		</node>
+		<node label="libs">
+		</node>
+		<node label="resourcebundles">
+			<node label="en_US">
+				<node label="crm.properties" url="source/resourcebundles/en_US/crm.properties"/>
+			</node>
+		</node>
+		<node label="src">
+			<node icon="packageIcon" label="assets" expanded="true">
+				<node icon="cssIcon" label="main.css" url="source/assets/main.css.html"/>
+			</node>
+			<node label="assets.fonts">
+				<node label="Georgia.ttf" url="source/assets/fonts/Georgia.ttf"/>
+			</node>
+			<node label="assets.images">
+				<node icon="imageIcon" label="backtrackButton.png" url="source/assets/images/backtrackButton.png.html"/>
+				<node icon="imageIcon" label="backtrackButtonOver.png" url="source/assets/images/backtrackButtonOver.png.html"/>
+				<node icon="imageIcon" label="chartBG.png" url="source/assets/images/chartBG.png.html"/>
+				<node icon="imageIcon" label="closeButton.png" url="source/assets/images/closeButton.png.html"/>
+				<node icon="imageIcon" label="DigiPri_logo.png" url="source/assets/images/DigiPri_logo.png.html"/>
+				<node icon="imageIcon" label="headerPieChart.png" url="source/assets/images/headerPieChart.png.html"/>
+				<node icon="imageIcon" label="maximizeButton.png" url="source/assets/images/maximizeButton.png.html"/>
+				<node icon="imageIcon" label="maximizeButtonOver.png" url="source/assets/images/maximizeButtonOver.png.html"/>
+				<node icon="imageIcon" label="maximizeButtonRounded.png" url="source/assets/images/maximizeButtonRounded.png.html"/>
+				<node icon="imageIcon" label="maximizeButtonRoundedOver.png" url="source/assets/images/maximizeButtonRoundedOver.png.html"/>
+				<node icon="imageIcon" label="ReportBackground.png" url="source/assets/images/ReportBackground.png.html"/>
+			</node>
+			<node icon="packageIcon" label="assets.skins" expanded="true">
+				<node icon="mxmlIcon" label="ApplicationBackgroundSkin.mxml" url="source/assets/skins/ApplicationBackgroundSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="BackTrackButtonSkin.mxml" url="source/assets/skins/BackTrackButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="ChartButtonSkin.mxml" url="source/assets/skins/ChartButtonSkin.mxml.html"/>
+				<node icon="imageIcon" label="chartIcon_downIcon.png" url="source/assets/skins/chartIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="chartIcon_overIcon.png" url="source/assets/skins/chartIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="chartIcon_upIcon.png" url="source/assets/skins/chartIcon_upIcon.png.html"/>
+				<node icon="mxmlIcon" label="ChartSkin.mxml" url="source/assets/skins/ChartSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="CloseButtonSkin.mxml" url="source/assets/skins/CloseButtonSkin.mxml.html"/>
+				<node icon="imageIcon" label="closeIcon_downIcon.png" url="source/assets/skins/closeIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="closeIcon_overIcon.png" url="source/assets/skins/closeIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="closeIcon_upIcon.png" url="source/assets/skins/closeIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="comboBoxPieChart_icon.png" url="source/assets/skins/comboBoxPieChart_icon.png.html"/>
+				<node icon="imageIcon" label="crosshair_icon.png" url="source/assets/skins/crosshair_icon.png.html"/>
+				<node icon="imageIcon" label="icon-arrow-back.gif" url="source/assets/skins/icon-arrow-back.gif.html"/>
+				<node icon="imageIcon" label="icon-bar-chart.gif" url="source/assets/skins/icon-bar-chart.gif.html"/>
+				<node icon="imageIcon" label="icon-close-window.gif" url="source/assets/skins/icon-close-window.gif.html"/>
+				<node icon="imageIcon" label="icon-grid.gif" url="source/assets/skins/icon-grid.gif.html"/>
+				<node icon="imageIcon" label="lockIcon_downIcon.png" url="source/assets/skins/lockIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="lockIcon_overIcon.png" url="source/assets/skins/lockIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="lockIcon_upIcon.png" url="source/assets/skins/lockIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="maxIcon_downIcon.png" url="source/assets/skins/maxIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="maxIcon_overIcon.png" url="source/assets/skins/maxIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="maxIcon_upIcon.png" url="source/assets/skins/maxIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="maximize.png" url="source/assets/skins/maximize.png.html"/>
+				<node icon="imageIcon" label="maximize_icon.png" url="source/assets/skins/maximize_icon.png.html"/>
+				<node icon="mxmlIcon" label="MaximizeButtonSkin.mxml" url="source/assets/skins/MaximizeButtonSkin.mxml.html"/>
+				<node icon="mxmlIcon" label="MaximizeButtonSkinRounded.mxml" url="source/assets/skins/MaximizeButtonSkinRounded.mxml.html"/>
+				<node icon="imageIcon" label="minIcon_downIcon.png" url="source/assets/skins/minIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="minIcon_overIcon.png" url="source/assets/skins/minIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="minIcon_upIcon.png" url="source/assets/skins/minIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="minimize_icon.png" url="source/assets/skins/minimize_icon.png.html"/>
+				<node icon="imageIcon" label="placeHolderWedge.png" url="source/assets/skins/placeHolderWedge.png.html"/>
+				<node icon="imageIcon" label="plusIcon_downIcon.png" url="source/assets/skins/plusIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="plusIcon_overIcon.png" url="source/assets/skins/plusIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="plusIcon_upIcon.png" url="source/assets/skins/plusIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="reportBgTile1.png" url="source/assets/skins/reportBgTile1.png.html"/>
+				<node icon="imageIcon" label="reportBgTile2.png" url="source/assets/skins/reportBgTile2.png.html"/>
+				<node icon="imageIcon" label="reportBgTile3.png" url="source/assets/skins/reportBgTile3.png.html"/>
+				<node icon="imageIcon" label="reportBgTile4.png" url="source/assets/skins/reportBgTile4.png.html"/>
+				<node icon="mxmlIcon" label="ReportSkin.mxml" url="source/assets/skins/ReportSkin.mxml.html"/>
+				<node icon="imageIcon" label="reportThumbBarH.png" url="source/assets/skins/reportThumbBarH.png.html"/>
+				<node icon="imageIcon" label="reportThumbBarV.png" url="source/assets/skins/reportThumbBarV.png.html"/>
+				<node icon="imageIcon" label="reportThumbGel.png" url="source/assets/skins/reportThumbGel.png.html"/>
+				<node icon="imageIcon" label="reportThumbLine.gif" url="source/assets/skins/reportThumbLine.gif.html"/>
+				<node icon="imageIcon" label="reportThumbPie.png" url="source/assets/skins/reportThumbPie.png.html"/>
+				<node icon="imageIcon" label="reportThumbTabular.png" url="source/assets/skins/reportThumbTabular.png.html"/>
+				<node icon="mxmlIcon" label="TabularButtonSkin.mxml" url="source/assets/skins/TabularButtonSkin.mxml.html"/>
+				<node icon="imageIcon" label="tabularIcon_downIcon.png" url="source/assets/skins/tabularIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="tabularIcon_overIcon.png" url="source/assets/skins/tabularIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="tabularIcon_upIcon.png" url="source/assets/skins/tabularIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="tile_placeholder.png" url="source/assets/skins/tile_placeholder.png.html"/>
+				<node icon="imageIcon" label="topBackground.gif" url="source/assets/skins/topBackground.gif.html"/>
+				<node icon="imageIcon" label="trayCloseIcon_disabledIcon.png" url="source/assets/skins/trayCloseIcon_disabledIcon.png.html"/>
+				<node icon="imageIcon" label="trayCloseIcon_downIcon.png" url="source/assets/skins/trayCloseIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="trayCloseIcon_overIcon.png" url="source/assets/skins/trayCloseIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="trayCloseIcon_upIcon.png" url="source/assets/skins/trayCloseIcon_upIcon.png.html"/>
+				<node icon="imageIcon" label="trayOpenIcon_disabledIcon.png" url="source/assets/skins/trayOpenIcon_disabledIcon.png.html"/>
+				<node icon="imageIcon" label="trayOpenIcon_downIcon.png" url="source/assets/skins/trayOpenIcon_downIcon.png.html"/>
+				<node icon="imageIcon" label="trayOpenIcon_overIcon.png" url="source/assets/skins/trayOpenIcon_overIcon.png.html"/>
+				<node icon="imageIcon" label="trayOpenIcon_upIcon.png" url="source/assets/skins/trayOpenIcon_upIcon.png.html"/>
+			</node>
+			<node icon="packageIcon" label="commands" expanded="true">
+				<node icon="actionScriptIcon" label="CommandAdapter.as" url="source/commands/CommandAdapter.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllClientDealsByCloseDateCommand.as" url="source/commands/GetAllClientDealsByCloseDateCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllClientDealsByStatusCommand.as" url="source/commands/GetAllClientDealsByStatusCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllClientDealsCommand.as" url="source/commands/GetAllClientDealsCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllRegionalSalesForecastsCommand.as" url="source/commands/GetAllRegionalSalesForecastsCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllSalesForecastsCommand.as" url="source/commands/GetAllSalesForecastsCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetAllSalesManagersCommand.as" url="source/commands/GetAllSalesManagersCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetChartItems.as" url="source/commands/GetChartItems.as.html"/>
+				<node icon="actionScriptIcon" label="GetClientDealsByStatusTypeId.as" url="source/commands/GetClientDealsByStatusTypeId.as.html"/>
+				<node icon="actionScriptIcon" label="GetNavItems.as" url="source/commands/GetNavItems.as.html"/>
+				<node icon="actionScriptIcon" label="GetOverallSalesProgressCommand.as" url="source/commands/GetOverallSalesProgressCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetReportGroupItems.as" url="source/commands/GetReportGroupItems.as.html"/>
+				<node icon="actionScriptIcon" label="GetSalesForecastsByUserIdCommand.as" url="source/commands/GetSalesForecastsByUserIdCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetSalesRepSalesForecastsBySalesManagerIdCommand.as" url="source/commands/GetSalesRepSalesForecastsBySalesManagerIdCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetSalesUnitForecastsByRegionIdCommand.as" url="source/commands/GetSalesUnitForecastsByRegionIdCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetServiceDefinitions.as" url="source/commands/GetServiceDefinitions.as.html"/>
+				<node icon="actionScriptIcon" label="GetTop10ClientDealsByRegionIdCommand.as" url="source/commands/GetTop10ClientDealsByRegionIdCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetTop10ClientDealsByStatusTypeID.as" url="source/commands/GetTop10ClientDealsByStatusTypeID.as.html"/>
+				<node icon="actionScriptIcon" label="GetTop10ClientDealsByUserIdCommand.as" url="source/commands/GetTop10ClientDealsByUserIdCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetTop10ClientDealsCommand.as" url="source/commands/GetTop10ClientDealsCommand.as.html"/>
+				<node icon="actionScriptIcon" label="GetTop10SalesRepForecastsByPercentOfQuotaCommand.as" url="source/commands/GetTop10SalesRepForecastsByPercentOfQuotaCommand.as.html"/>
+				<node icon="actionScriptIcon" label="ICommand.as" url="source/commands/ICommand.as.html"/>
+			</node>
+			<node icon="packageIcon" label="components.containers" expanded="true">
+				<node icon="actionScriptIcon" label="DragDropTileGroup.as" url="source/components/containers/DragDropTileGroup.as.html"/>
+				<node icon="actionScriptIcon" label="ExtendedDragDropTileGroup.as" url="source/components/containers/ExtendedDragDropTileGroup.as.html"/>
+			</node>
+			<node icon="packageIcon" label="components.drawing" expanded="true">
+				<node icon="mxmlIcon" label="TilePlaceHolderView.mxml" url="source/components/drawing/TilePlaceHolderView.mxml.html"/>
+			</node>
+			<node icon="packageIcon" label="components.navigation" expanded="true">
+				<node icon="actionScriptIcon" label="ReportsDrawer.as" url="source/components/navigation/ReportsDrawer.as.html"/>
+				<node icon="mxmlIcon" label="ReportsDrawerView.mxml" url="source/components/navigation/ReportsDrawerView.mxml.html"/>
+			</node>
+			<node icon="packageIcon" label="components.navigation.events" expanded="true">
+				<node icon="actionScriptIcon" label="ReportsDrawerEvent.as" url="source/components/navigation/events/ReportsDrawerEvent.as.html"/>
+			</node>
+			<node icon="packageIcon" label="components.renderers" expanded="true">
+				<node icon="actionScriptIcon" label="ReportsDrawerRenderer.as" url="source/components/renderers/ReportsDrawerRenderer.as.html"/>
+				<node icon="mxmlIcon" label="ReportsDrawerRendererView.mxml" url="source/components/renderers/ReportsDrawerRendererView.mxml.html"/>
+			</node>
+			<node icon="packageIcon" label="components.reports" expanded="true">
+				<node icon="actionScriptIcon" label="BarChartReport.as" url="source/components/reports/BarChartReport.as.html"/>
+				<node icon="mxmlIcon" label="BarChartReportView.mxml" url="source/components/reports/BarChartReportView.mxml.html"/>
+				<node icon="actionScriptIcon" label="BaseChart.as" url="source/components/reports/BaseChart.as.html"/>
+				<node icon="actionScriptIcon" label="ColumnChartReport.as" url="source/components/reports/ColumnChartReport.as.html"/>
+				<node icon="mxmlIcon" label="ColumnChartReportView.mxml" url="source/components/reports/ColumnChartReportView.mxml.html"/>
+				<node icon="actionScriptIcon" label="DrillDownReport.as" url="source/components/reports/DrillDownReport.as.html"/>
+				<node icon="mxmlIcon" label="DrillDownReportView.mxml" url="source/components/reports/DrillDownReportView.mxml.html"/>
+				<node icon="actionScriptIcon" label="IBaseChartReport.as" url="source/components/reports/IBaseChartReport.as.html"/>
+				<node icon="actionScriptIcon" label="IBasePod.as" url="source/components/reports/IBasePod.as.html"/>
+				<node icon="actionScriptIcon" label="IBaseReport.as" url="source/components/reports/IBaseReport.as.html"/>
+				<node icon="actionScriptIcon" label="IBaseTabularReport.as" url="source/components/reports/IBaseTabularReport.as.html"/>
+				<node icon="actionScriptIcon" label="LineChartReport.as" url="source/components/reports/LineChartReport.as.html"/>
+				<node icon="mxmlIcon" label="LineChartReportView.mxml" url="source/components/reports/LineChartReportView.mxml.html"/>
+				<node icon="actionScriptIcon" label="PieChartReport.as" url="source/components/reports/PieChartReport.as.html"/>
+				<node icon="mxmlIcon" label="PieChartReportView.mxml" url="source/components/reports/PieChartReportView.mxml.html"/>
+				<node icon="actionScriptIcon" label="TabularDataReport.as" url="source/components/reports/TabularDataReport.as.html"/>
+				<node icon="mxmlIcon" label="TabularDataReportView.mxml" url="source/components/reports/TabularDataReportView.mxml.html"/>
+			</node>
+			<node icon="packageIcon" label="components.reports.events" expanded="true">
+				<node icon="actionScriptIcon" label="ReportViewEvent.as" url="source/components/reports/events/ReportViewEvent.as.html"/>
+			</node>
+			<node icon="packageIcon" label="model" expanded="true">
+				<node icon="actionScriptIcon" label="ApplicationModel.as" url="source/model/ApplicationModel.as.html"/>
+			</node>
+			<node icon="packageIcon" label="model.beans" expanded="true">
+				<node icon="actionScriptIcon" label="ActivityType.as" url="source/model/beans/ActivityType.as.html"/>
+				<node icon="actionScriptIcon" label="Campaign.as" url="source/model/beans/Campaign.as.html"/>
+				<node icon="actionScriptIcon" label="CampaignType.as" url="source/model/beans/CampaignType.as.html"/>
+				<node icon="actionScriptIcon" label="CartesianReportSeries.as" url="source/model/beans/CartesianReportSeries.as.html"/>
+				<node icon="actionScriptIcon" label="ClientAccount.as" url="source/model/beans/ClientAccount.as.html"/>
+				<node icon="actionScriptIcon" label="ClientDeal.as" url="source/model/beans/ClientDeal.as.html"/>
+				<node icon="actionScriptIcon" label="LeadSourceType.as" url="source/model/beans/LeadSourceType.as.html"/>
+				<node icon="actionScriptIcon" label="PieReportSeries.as" url="source/model/beans/PieReportSeries.as.html"/>
+				<node icon="actionScriptIcon" label="RatingType.as" url="source/model/beans/RatingType.as.html"/>
+				<node icon="actionScriptIcon" label="Region.as" url="source/model/beans/Region.as.html"/>
+				<node icon="actionScriptIcon" label="RegionalSalesForecast.as" url="source/model/beans/RegionalSalesForecast.as.html"/>
+				<node icon="actionScriptIcon" label="RegionalSalesManager.as" url="source/model/beans/RegionalSalesManager.as.html"/>
+				<node icon="actionScriptIcon" label="ReportFilter.as" url="source/model/beans/ReportFilter.as.html"/>
+				<node icon="actionScriptIcon" label="ReportGroup.as" url="source/model/beans/ReportGroup.as.html"/>
+				<node icon="actionScriptIcon" label="ReportItem.as" url="source/model/beans/ReportItem.as.html"/>
+				<node icon="actionScriptIcon" label="SalesActivity.as" url="source/model/beans/SalesActivity.as.html"/>
+				<node icon="actionScriptIcon" label="SalesActivityType.as" url="source/model/beans/SalesActivityType.as.html"/>
+				<node icon="actionScriptIcon" label="SalesForecast.as" url="source/model/beans/SalesForecast.as.html"/>
+				<node icon="actionScriptIcon" label="SalesManager.as" url="source/model/beans/SalesManager.as.html"/>
+				<node icon="actionScriptIcon" label="SalesQuota.as" url="source/model/beans/SalesQuota.as.html"/>
+				<node icon="actionScriptIcon" label="SalesRep.as" url="source/model/beans/SalesRep.as.html"/>
+				<node icon="actionScriptIcon" label="SalesUnit.as" url="source/model/beans/SalesUnit.as.html"/>
+				<node icon="actionScriptIcon" label="SalesUnitForecast.as" url="source/model/beans/SalesUnitForecast.as.html"/>
+				<node icon="actionScriptIcon" label="StageType.as" url="source/model/beans/StageType.as.html"/>
+				<node icon="actionScriptIcon" label="StatusType.as" url="source/model/beans/StatusType.as.html"/>
+				<node icon="actionScriptIcon" label="TabularColumn.as" url="source/model/beans/TabularColumn.as.html"/>
+				<node icon="actionScriptIcon" label="User.as" url="source/model/beans/User.as.html"/>
+			</node>
+			<node icon="packageIcon" label="services" expanded="true">
+				<node icon="actionScriptIcon" label="IClientDealService.as" url="source/services/IClientDealService.as.html"/>
+				<node icon="actionScriptIcon" label="IRegionalSalesManagerService.as" url="source/services/IRegionalSalesManagerService.as.html"/>
+				<node icon="actionScriptIcon" label="ISalesForecastService.as" url="source/services/ISalesForecastService.as.html"/>
+				<node icon="actionScriptIcon" label="ISalesManagerService.as" url="source/services/ISalesManagerService.as.html"/>
+				<node icon="actionScriptIcon" label="ISalesQuotaService.as" url="source/services/ISalesQuotaService.as.html"/>
+				<node icon="actionScriptIcon" label="ISalesRepService.as" url="source/services/ISalesRepService.as.html"/>
+				<node icon="actionScriptIcon" label="IUserService.as" url="source/services/IUserService.as.html"/>
+				<node icon="actionScriptIcon" label="IXMLHTTPLoader.as" url="source/services/IXMLHTTPLoader.as.html"/>
+				<node icon="actionScriptIcon" label="ServiceFactory.as" url="source/services/ServiceFactory.as.html"/>
+			</node>
+			<node icon="packageIcon" label="services.remote" expanded="true">
+				<node icon="actionScriptIcon" label="ClientDealServiceRemote.as" url="source/services/remote/ClientDealServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="RegionalSalesManagerServiceRemote.as" url="source/services/remote/RegionalSalesManagerServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="SalesForecastServiceRemote.as" url="source/services/remote/SalesForecastServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="SalesManagerServiceRemote.as" url="source/services/remote/SalesManagerServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="SalesQuotaServiceRemote.as" url="source/services/remote/SalesQuotaServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="SalesRepServiceRemote.as" url="source/services/remote/SalesRepServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="ServiceLoaderRemote.as" url="source/services/remote/ServiceLoaderRemote.as.html"/>
+				<node icon="actionScriptIcon" label="UserServiceRemote.as" url="source/services/remote/UserServiceRemote.as.html"/>
+				<node icon="actionScriptIcon" label="XMLDataLoaderRemote.as" url="source/services/remote/XMLDataLoaderRemote.as.html"/>
+			</node>
+			<node icon="packageIcon" label="utils" expanded="true">
+				<node icon="actionScriptIcon" label="ChartSeriesUtils.as" url="source/utils/ChartSeriesUtils.as.html"/>
+				<node icon="actionScriptIcon" label="PropertyUtils.as" url="source/utils/PropertyUtils.as.html"/>
+				<node icon="actionScriptIcon" label="StaticImports.as" url="source/utils/StaticImports.as.html"/>
+			</node>
+			<node label="xml">
+				<node label="nav.xml" url="source/xml/nav.xml.txt"/>
+				<node label="reportGroups.xml" url="source/xml/reportGroups.xml.txt"/>
+				<node label="reports.xml" url="source/xml/reports.xml.txt"/>
+				<node label="services.xml" url="source/xml/services.xml.txt"/>
+			</node>
+			<node icon="mxmlAppIcon" selected="true" label="AdobeCRM.mxml" url="source/AdobeCRM.mxml.html"/>
+		</node>
+		<node label="settings.xml" url="source/settings.xml.txt"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 356K)" url="AdobeCRM.zip">
+	</zipfile>
+	<sdklink label="Download Flex SDK" url="http://www.adobe.com/go/flex4_sdk_download">
+	</sdklink>
+</index>

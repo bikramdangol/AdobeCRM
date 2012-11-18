@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<components:DrillDownReport 
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:components="components.reports.*"
+	width="400" height="270" >
+	
+	<fx:Metadata>
+		[ResourceBundle("crm")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[ 
+			import assets.skins.BackTrackButtonSkin;
+			import assets.skins.CloseButtonSkin;
+			import assets.skins.MaximizeButtonSkin;
+			
+			import utils.StaticImports;
+		]]>
+	</fx:Script>
+	
+	<s:HGroup id="reportControlBar"
+			  width="400"
+			  height="31"
+			  useHandCursor="{rearrangeable}"
+			  verticalAlign="middle"
+			  gap="0"
+			  toolTip="{showRearrangeableToolTip( rearrangeable )}" >
+		
+		<s:Button id="backTrackButton"
+				  height="31"
+				  skinClass="assets.skins.BackTrackButtonSkin"
+				  visible="true"
+				  includeInLayout="true"
+				  enabled="{allowBackTrack}"
+				  click="backTrackButton_clickHandler(event)"
+				  toolTip="{resourceManager.getString('crm','statusMessage.backTrack')}"
+				  useHandCursor="{allowBackTrack}" />
+		
+		<s:Label id="reportTitle"
+				 text="{reportBean.chartTitle + titleAppender}"
+				 styleName="reportTitle" />
+		
+		<mx:Spacer width="100%" />
+		
+		<mx:Image id="rearrangeIcon"
+				  visible="{rearrangeable}"
+				  includeInLayout="true" 
+				  useHandCursor="{rearrangeable}" 
+				  source="{StaticImports.crosshairIcon}" 
+				  width="13" height="13"/>
+		
+		<mx:Spacer width="100%" />
+		
+		<s:Button id="chartButton" 
+				  height="15" width="19"
+				  click="chartButton_ClickHandler(event)"
+				  visible="false"
+				  useHandCursor="true"
+				  buttonMode="true"
+				  skinClass="assets.skins.ChartButtonSkin"
+				  toolTip="{resourceManager.getString('crm','statusMessage.selectView')}" />
+		
+		<mx:Spacer width="5" />
+		
+		<s:Button id="tabularButton" height="15" width="19"
+				  click="tabularButton_ClickHandler(event)"
+				  visible="false"
+				  useHandCursor="true"
+				  buttonMode="true"
+				  skinClass="assets.skins.TabularButtonSkin"
+				  toolTip="{resourceManager.getString('crm','statusMessage.selectView')}" />
+		
+		<s:Button id="maxButton" 
+				  height="31"
+				  click="maxButton_ClickHandler(event)"
+				  enabled="{maxButtonEnabled}"
+				  visible="{maxButtonVisible}"
+				  useHandCursor="true"
+				  buttonMode="true"
+				  right="31"
+				  skinClass="{closeButtonEnabled ? assets.skins.MaximizeButtonSkin : assets.skins.MaximizeButtonSkinRounded}"
+				  toolTip="{resourceManager.getString('crm','statusMessage.maximizeReport')}" width="31" />
+		
+		<s:Button id="closeButton"
+				  enabled="{!isMaximized}"
+				  visible="{closeButtonVisible}"
+				  includeInLayout="{closeButtonVisible}"
+				  height="31" right="0"
+				  click="handleClose(event)"
+				  useHandCursor="true"
+				  buttonMode="true"
+				  skinClass="assets.skins.CloseButtonSkin"
+				  toolTip="{resourceManager.getString('crm','statusMessage.removeReport')}" />
+		
+	</s:HGroup>
+	
+	<mx:ViewStack id="chartStack"
+				  borderStyle="none"
+				  top="31"
+				  width="400"
+				  height="239" x="0"/>
+	
+</components:DrillDownReport>

@@ -1,0 +1,360 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>DrillDownReport.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ReportViewEvent</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">display</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DisplayObject</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MouseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptOperator">*</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">model</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ApplicationModel</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">model</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beans</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PieReportSeries</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">model</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beans</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ReportItem</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">charts</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ChartItemEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">collections</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ArrayCollection</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">containers</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ViewStack</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ToggleButtonBar</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ClassFactory</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">INavigatorContent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">IVisualElement</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">core</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">UIComponent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CloseEvent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">events</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ItemClickEvent</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">Button</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NavigatorContent</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SkinnableContainer</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">spark</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">skins</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">SparkSkin</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PropertyUtils</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">DrillDownReport</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">SkinnableContainer</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">IBasePod</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+
+        <span class="ActionScriptASDoc">/** STATIC CONSTANTS **/</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">MAXIMIZE_STATE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"maximize"</span>;
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptReserved">static</span> <span class="ActionScriptReserved">const</span> <span class="ActionScriptDefault_Text">NORMAL_STATE</span>:<span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"normal"</span>;
+    
+        <span class="ActionScriptASDoc">/** UI ELEMENTS **/</span>
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">appModel</span> : <span class="ActionScriptDefault_Text">ApplicationModel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ApplicationModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getInstance</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">reportState</span> : <span class="ActionScriptDefault_Text">String</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">titleAppender</span> : <span class="ActionScriptDefault_Text">String</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">""</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">rearrangeable</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">closeButtonEnabled</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">closeButtonVisible</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxButtonEnabled</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">isMaximized</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxButtonVisible</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">chartStack</span> : <span class="ActionScriptDefault_Text">ViewStack</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">chartButton</span>:<span class="ActionScriptDefault_Text">Button</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tabularButton</span>:<span class="ActionScriptDefault_Text">Button</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">allowBackTrack</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maskObject</span> : <span class="ActionScriptDefault_Text">DisplayObject</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">maxButton</span> : <span class="ActionScriptDefault_Text">Button</span>;
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">closeButton</span> : <span class="ActionScriptDefault_Text">Button</span>;    
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tabularView</span> : <span class="ActionScriptDefault_Text">IBaseTabularReport</span>;
+        
+        <span class="ActionScriptASDoc">/** MISC FIELDS **/</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">reportBeanChanged</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_reportBean</span> : <span class="ActionScriptDefault_Text">ReportItem</span>;
+        
+        <span class="ActionScriptComment">// Stores the reportBean of charts that
+</span>        <span class="ActionScriptComment">// were drilled from, so the user can return
+</span>        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">backTrack</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">backTrackTitleAppender</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">DrillDownReport</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">styleName</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">"drillDownReport"</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *
+         * @return
+         *
+         */</span>
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"reportBeanChanged"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">ReportItem</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_reportBean</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *
+         * @param value
+         *
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">value</span> : <span class="ActionScriptDefault_Text">ReportItem</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">value</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptReserved">return</span>;
+            
+            <span class="ActionScriptDefault_Text">_reportBean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+            
+            <span class="ActionScriptDefault_Text">reportBeanChanged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            
+            <span class="ActionScriptDefault_Text">invalidateProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">this</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"reportBeanChanged"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_reportView</span> : <span class="ActionScriptDefault_Text">IBaseReport</span>;        
+        
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">reportView</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptDefault_Text">IBaseReport</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_reportView</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">reportView</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">value</span>:<span class="ActionScriptDefault_Text">IBaseReport</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">_reportView</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/** HANDLER METHODS **/</span>
+
+        <span class="ActionScriptASDoc">/**
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">handleClose</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dspEvent</span>:<span class="ActionScriptDefault_Text">CloseEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">CloseEvent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">CloseEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CLOSE</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">dspEvent</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Dispatches a custom _chartContainerEvent passing this object as a parameter. The listening
+         * component should be the parent container.
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">maxButton_ClickHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">chartEvent</span> : <span class="ActionScriptDefault_Text">ReportViewEvent</span>;
+            
+            <span class="ActionScriptReserved">if</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">reportState</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptString">"maximize"</span><span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">chartEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ReportViewEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">ReportViewEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MINIMIZE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span> <span class="ActionScriptReserved">else</span> <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">chartEvent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ReportViewEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">ReportViewEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">MAXIMIZE</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">chartEvent</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">ReportViewEvent</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *
+         * @param event
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">drillDownHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">ChartItemEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drillDownChartId</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptDefault_Text">backTrack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">backTrackTitleAppender</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">titleAppender</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">allowBackTrack</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+            
+            <span class="ActionScriptComment">// Used to dynamically determine a reportBean
+</span>            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">item</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">event</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">hitData</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">item</span>;
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">drillReport</span> : <span class="ActionScriptDefault_Text">ReportItem</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">appModel</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getReportDataById</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drillDownChartId</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">drillDownData</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drillDownField</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tempAppender</span> : <span class="ActionScriptDefault_Text">Object</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">drillDownData</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">drillReport</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">commandArgs</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">splice</span><span class="ActionScriptBracket/Brace">(</span> 0 <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">drillReport</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">commandArgs</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">drillDownData</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">horizontalAxisField</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">tempAppender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">horizontalAxisField</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">verticalAxisField</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">tempAppender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">verticalAxisField</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+                <span class="ActionScriptReserved">else</span> <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">pieSeries</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tempString</span> : <span class="ActionScriptDefault_Text">PieReportSeries</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">pieSeries</span><span class="ActionScriptBracket/Brace">[</span>0<span class="ActionScriptBracket/Brace">]</span>;
+                    
+                    <span class="ActionScriptDefault_Text">tempAppender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tempString</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">nameField</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">titleAppender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptString">" "</span> <span class="ActionScriptOperator">+</span> <span class="ActionScriptDefault_Text">tempAppender</span>;
+
+            <span class="ActionScriptDefault_Text">reportBean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">drillReport</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">backTrackButton_clickHandler</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">event</span> : <span class="ActionScriptDefault_Text">MouseEvent</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">backTrack</span> <span class="ActionScriptOperator">||</span> <span class="ActionScriptDefault_Text">backTrack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">reportBean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">backTrack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">pop</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">titleAppender</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">backTrackTitleAppender</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">pop</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">backTrack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">allowBackTrack</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">chartButton_ClickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selectedIndex</span> <span class="ActionScriptOperator">=</span> 0;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">tabularButton_ClickHandler</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">event</span>:<span class="ActionScriptDefault_Text">MouseEvent</span><span class="ActionScriptBracket/Brace">)</span>:<span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">event</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selectedIndex</span> <span class="ActionScriptOperator">=</span> 1;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/** MISC METHODS **/</span>
+        
+        <span class="ActionScriptASDoc">/**
+         * Create a new chart in the pod based on the reportBean assigned to the pod.
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">createNewChart</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">removeAllChildren</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">ReportClass</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDefinitionByName</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">Class</span>;
+
+            <span class="ActionScriptDefault_Text">reportView</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">ReportClass</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">BaseChart</span>;
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">reportView</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptReserved">return</span>;
+        
+            <span class="ActionScriptDefault_Text">reportView</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportBean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reportBean</span>;
+            <span class="ActionScriptDefault_Text">reportView</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportState</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reportState</span>;
+            
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n</span>:<span class="ActionScriptDefault_Text">NavigatorContent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">NavigatorContent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptDefault_Text">n</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addElement</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportView</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">IVisualElement</span> <span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">n</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">selectedChild</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptDefault_Text">n</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">INavigatorContent</span><span class="ActionScriptBracket/Brace">)</span>;
+            
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tabularColumns</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span> <span class="ActionScriptOperator">&gt;</span> 0 <span class="ActionScriptOperator">&amp;&amp;</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportView</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">IBaseTabularReport</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">tabularView</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">TabularDataReportView</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">tabularView</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reportBean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reportBean</span>;
+                
+                <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">n2</span>:<span class="ActionScriptDefault_Text">NavigatorContent</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">NavigatorContent</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">n2</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addElement</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tabularView</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">IVisualElement</span> <span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptDefault_Text">chartStack</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addChild</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">n2</span> <span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptDefault_Text">chartButton</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+                <span class="ActionScriptDefault_Text">tabularButton</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">visible</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">showRearrangeableToolTip</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">rearrange</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">rearrange</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">resourceManager</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getString</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">'crm'</span><span class="ActionScriptOperator">,</span><span class="ActionScriptString">'statusMessage.moveReport'</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">else</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptReserved">null</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/** OVERRIDDEN METHODS **/</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *
+         *
+         */</span>
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">commitProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBeanChanged</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">reportBeanChanged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+                
+                <span class="ActionScriptDefault_Text">createNewChart</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportView</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">UIComponent</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">addEventListener</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">ChartItemEvent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ITEM_CLICK</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">drillDownHandler</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">false</span> <span class="ActionScriptOperator">,</span> 0 <span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportState</span> <span class="ActionScriptOperator">==</span> <span class="ActionScriptDefault_Text">MAXIMIZE_STATE</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">rearrangeable</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">super</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">commitProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

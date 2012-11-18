@@ -1,0 +1,7 @@
+<services>
+	<config>
+		<nav>xml/nav.xml</nav>
+		<reports>xml/reports.xml</reports>
+		<reportGroups>xml/reportGroups.xml</reportGroups>
+	</config>
+</services>

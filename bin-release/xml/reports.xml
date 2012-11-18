@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report id="101"
+		name="Welcome"
+		type="modules.welcome.Welcome" />
+
+	<report id="201"
+		name="salesForecastsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetAllSalesForecastsCommand"
+		drillDown="204"
+		drillDownField="user"
+		filterSlider="0"
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="salesQuota"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Sales Forecasts By Representative</navigation>
+			<title>Sales Forecasts By Representative</title>
+			<xAxis>Sales Representative</xAxis>
+			<yAxis>Projected Total Sales</yAxis>			
+		</labels>
+	</report>
+	<report id="202"
+		name="salesForecastsDataGrid"
+		type="components.reports.TabularDataReportView"
+		command="commands.GetAllSalesForecastsCommand"
+		drillDown="103"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbTabular.png">
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="projectedTotalSales"
+				headerText="Projected Sales"
+				isCurrency="1" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="salesQuota"
+				headerText="Sales Quota"
+				isCurrency="1" />
+		</tabularColumns>
+		<labels>
+			<navigation>Sales Forecasts</navigation>
+			<title>Sales Forecasts</title>
+		</labels>
+	</report>
+	<report id="203"
+		name="topClientDealsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="title"
+				headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="estimatedRevenue"
+				headerText="Estimated Revenue"
+				isCurrency="1" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Top Client Deals</navigation>
+			<title>Top Client Deals</title>
+			<xAxis>Application</xAxis>
+			<yAxis>Estimated Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="204"
+		name="salesPersonForecastChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetSalesForecastsByUserIdCommand"
+		drillDown="0"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="salesQuota"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Forecast for</navigation>
+			<title>Forecast for</title>
+		</labels>
+	</report>
+	<report id="205"
+		name="topClientDealsPieChart"
+		type="components.reports.PieChartReportView"
+		command="commands.GetTop10ClientDealsCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"		
+		reportIcon="assets/skins/reportThumbPie.png">
+		<reportSeries>
+			<pieSeries type="mx.charts.series.PieSeries"
+				nameField="title"
+				field="estimatedRevenue"
+				isCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Top Client Deals</navigation>
+			<title>Top Client Deals</title>
+		</labels>
+	</report>
+	<report id="206"
+		name="salesPersonForecastChart"
+		type="components.reports.BarChartReportView"
+		command="commands.GetAllSalesForecastsCommand"
+		drillDown="204"
+		drillDownField="user"
+		filterSlider="0"			
+		reportIcon="assets/skins/reportThumbBarH.png">
+		<axis>
+			<vertical type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.BarSeries"
+				xField="salesQuota"
+				yField="userFullName"
+				displayName="Sales Quota" />
+			<cartesianSeries type="mx.charts.series.BarSeries"
+				xField="projectedTotalSales"
+				yField="userFullName"
+				displayName="Projected Total Sales" />
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="projectedTotalSales"
+				headerText="Projected Sales"
+				isCurrency="1" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="salesQuota"
+				headerText="Sales Quota"
+				isCurrency="1" />
+		</tabularColumns>
+		<labels>
+			<navigation>Sales Forecasts</navigation>
+			<title>Sales Forecasts</title>
+			<xAxis>Sales Representative</xAxis>
+			<yAxis>Sales Quota vs. Projected Total Sales</yAxis>			
+		</labels>
+	</report>
+	<report id="207"
+		name="regionalSalesForecastsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetAllRegionalSalesForecastsCommand"
+		drillDown="208"
+		drillDownField="region"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="region.regionName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.LineSeries"
+				xField="region.regionName"
+				yField="salesQuota"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="region.regionName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Regional Sales Forecasts</navigation>
+			<title>Regional Sales Forecasts</title>
+			<xAxis>Region</xAxis>
+			<yAxis>Projected Total Sales</yAxis>
+		</labels>
+	</report>
+	<report id="208"
+		name="salesUnitForecastsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetSalesUnitForecastsByRegionIdCommand"
+		drillDown="209"
+		drillDownField="salesManager"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="salesManager.fullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="salesManager.fullName"
+				yField="salesQuota"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="salesManager.fullName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Sales Unit Forecasts</navigation>
+			<title>Regional Forecast For The </title>
+		</labels>
+	</report>
+	<report id="209"
+		name="salesManagersSalesRepForecastsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetSalesRepSalesForecastsBySalesManagerIdCommand"
+		drillDown="219"
+		drillDownField="user"
+		filterSlider="0"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="salesQuota"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Sales Unit Sales Rep Forecasts</navigation>
+			<title>Forecasts For</title>
+		</labels>
+	</report>
+	<report id="210"
+		name="salesManagersSalesRepForecastsChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetSalesRepSalesForecastsBySalesManagerIdCommand"
+		drillDown="207"
+		drillDownField="user"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="salesQuota"
+				displayName="Sales Quota" />
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="projectedTotalSales"
+				displayName="Projected Total Sales" />
+		</reportSeries>
+		<labels>
+			<navigation>Sales Unit Sales Rep Forecasts</navigation>
+			<title>Sales Unit Sales Rep Forecasts</title>
+		</labels>
+	</report>
+	<report id="211"
+		name="allClientDealsByStatus"
+		type="components.reports.PieChartReportView"
+		command="commands.GetAllClientDealsByStatusCommand"
+		drillDown="213"
+		drillDownField="statusType"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbPie.png">
+		<reportSeries>
+			<pieSeries type="mx.charts.series.PieSeries"
+				nameField="statusTypeName"
+				labelField="statusTypeName"
+				field="statusTypeCount" />
+		</reportSeries>
+		<labels>
+			<navigation>Client Deal Status</navigation>
+			<title>Client Deal Status</title>
+		</labels>
+	</report>
+	<report id="212"
+		name="clientDealsByCloseDate"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetAllClientDealsByCloseDateCommand"
+		drillDown="214"
+		drillDownField="clientDealSet"
+		filterSlider="1"
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="label" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="label"
+				yField="totalRevenue"
+				displayName="Total Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<labels>
+			<navigation>Client Deal Close Dates</navigation>
+			<title>Client Deal Close Dates</title>
+			<xAxis>Weeks</xAxis>
+			<yAxis>Total Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="213"
+			name="clientDealsByStatusChart"
+			type="components.reports.TabularDataReportView"
+			command="commands.GetClientDealsByStatusTypeId"
+			drillDown="0"
+			filterSlider="0"			
+			reportIcon="assets/skins/reportThumbTabular.png">
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				   dataField="title"
+				   headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				   dataField="estimatedRevenue"
+				   headerText="Estimated Revenue"
+				   isCurrency="1" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				   dataField="estimatedCloseDate"
+				   headerText="Close Date" />				   
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				   dataField="statusType.typeName"
+				   headerText="Status" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				   dataField="userFullName"
+				   headerText="Deal Owner" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Client Deal Status</navigation>
+			<title>Client Deal Status</title>
+		</labels>
+	</report>	
+	<report id="214"
+			name="clientDealsByCloseDate"
+			type="components.reports.TabularDataReportView"
+			command="commands.GetClientDealsByCloseDate"
+			drillDown="212"
+			filterSlider="0"			
+			reportIcon="assets/skins/reportThumbTabular.png">
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+						   dataField="title"
+						   headerText="Title" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+						   dataField="estimatedRevenue"
+						   headerText="Estimated Revenue"
+						   isCurrency="1" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+						   dataField="estimatedCloseDate"
+						   headerText="Close Date" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Client Deals By Close Date</navigation>
+			<title>Client Deals By Close Date</title>
+		</labels>
+	</report>	
+	<report id="215"
+		name="topClientDealsByRegionIdChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByRegionIdCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<commandArgs>
+			<args type="model.beans.Region" regionId="1" regionName="northwest"/>
+		</commandArgs>		
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+				
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="title"
+				headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="estimatedRevenue"
+				headerText="Estimated Revenue"
+				isCurrency="1" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Top Client Deals - Northwest</navigation>
+			<title>Top Client Deals - Northwest</title>
+			<xAxis>Application</xAxis>
+			<yAxis>Estimated Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="216"
+		name="topClientDealsByRegionIdChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByRegionIdCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<commandArgs>
+			<args type="model.beans.Region" regionId="2" regionName="southwest"/>
+		</commandArgs>		
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="title"
+				headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="estimatedRevenue"
+				headerText="Estimated Revenue"
+				isCurrency="1" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Top Client Deals - Southwest </navigation>
+			<title>Top Client Deals - Southwest</title>
+			<xAxis>Application</xAxis>
+			<yAxis>Estimated Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="217"
+		name="topClientDealsByRegionIdChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByRegionIdCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<commandArgs>
+			<args type="model.beans.Region" regionId="3" regionName="northeast"/>
+		</commandArgs>		
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="title"
+				headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="estimatedRevenue"
+				headerText="Estimated Revenue"
+				isCurrency="1" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Top Client Deals - Northeast</navigation>
+			<title>Top Client Deals - Northeast</title>
+			<xAxis>Application</xAxis>
+			<yAxis>Estimated Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="218"
+		name="topClientDealsByRegionIdChart"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByRegionIdCommand"
+		drillDown="0"
+		filterSlider="1"		
+		hideMinimizedLabels="1"		
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<commandArgs>
+			<args type="model.beans.Region" regionId="4" regionName="southeast"/>
+		</commandArgs>		
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<tabularColumns>
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="title"
+				headerText="Client Deal" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="userFullName"
+				headerText="Name" />
+			<tabularColumn type="mx.controls.dataGridClasses.DataGridColumn"
+				dataField="estimatedRevenue"
+				headerText="Estimated Revenue"
+				isCurrency="1" />
+		</tabularColumns>		
+		<labels>
+			<navigation>Top Client Deals - Southeast</navigation>
+			<title>Top Client Deals - Southeast</title>
+			<xAxis>Application</xAxis>
+			<yAxis>Estimated Revenue</yAxis>
+		</labels>
+	</report>
+	<report id="219"
+		name="topClientDealsByUserId"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByUserIdCommand"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				labelField="title"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>		
+		<labels>
+			<navigation>Top Client Deals By User</navigation>
+			<title>Top Client Deals For</title>
+		</labels>
+	</report>	
+	<report id="220"
+		name="topSalesRepForecastsByPercentOfQuota"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10SalesRepForecastsByPercentOfQuotaCommand"
+		drillDown="0"
+		filterSlider="0"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				field="userFullName" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="userFullName"
+				yField="percentOfQuota"
+				displayName="Sales Quota"
+				isYFieldPercentage="1" />
+		</reportSeries>		
+		<labels>
+			<navigation>Top Sales Rep Forecasts By Percent Of Quota </navigation>
+			<title>Top Sales Rep Forecasts By % Of Quota</title>
+			<xAxis>Sales Representative</xAxis>
+			<yAxis>% of Sales Quota</yAxis>			
+		</labels>
+	</report>
+	<report id="221"
+		name="overallSalesProgress "
+		type="components.reports.LineChartReportView"
+		command="commands.GetOverallSalesProgressCommand"
+		drillDown="0"
+		filterSlider="0"		
+		reportIcon="assets/skins/reportThumbLine.gif">
+		<axis>
+			<horizontal type="String"
+				field="label" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.LineSeries"
+				xField="label"
+				yField="accumulatedRevenue"
+				displayName="Total Revenue Till Close Week"
+				isYFieldCurrency="1" />
+			<cartesianSeries type="mx.charts.series.LineSeries"
+				xField="label"
+				yField="sumOfQuotas"
+				displayName="Sales Quota"
+				isYFieldCurrency="1" />
+		</reportSeries>		
+		<labels>
+			<navigation>Overall Sales Progress</navigation>
+			<title>Overall Sales Progress</title>
+			<xAxis>Closing Week</xAxis>
+			<yAxis>Revenue / Quota</yAxis>			
+		</labels>
+	</report>
+	<report id="222"
+		name="topClientDealsCommited"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByStatusTypeID"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<commandArgs>
+			<args type="model.beans.StatusType" statusType="2" statusTypeId="7" typeName="escalated"/>			
+		</commandArgs>		
+		<labels>
+			<navigation>Top Commited Client Deals</navigation>
+			<title>Top Commited Client Deals</title>
+			<xAxis>Client Deal</xAxis>
+			<yAxis>Estimated Revenue</yAxis>			
+		</labels>
+	</report>
+	<report id="223"
+		name="topClientDealsPossiblyClosing"
+		type="components.reports.ColumnChartReportView"
+		command="commands.GetTop10ClientDealsByStatusTypeID"
+		drillDown="0"
+		filterSlider="1"
+		hideMinimizedLabels="1"				
+		reportIcon="assets/skins/reportThumbBarV.png">
+		<axis>
+			<horizontal type="String"
+				labelField="title"
+				field="clientDealId" />
+		</axis>
+		<reportSeries>
+			<cartesianSeries type="mx.charts.series.ColumnSeries"
+				xField="clientDealId"
+				yField="estimatedRevenue"
+				displayName="Estimated Revenue"
+				isYFieldCurrency="1" />
+		</reportSeries>
+		<commandArgs>
+			<args type="model.beans.StatusType" statusType="6" statusTypeId="3" typeName="RMA filing"/>			
+		</commandArgs>		
+		<labels>
+			<navigation>Top Possible Close This Week</navigation>
+			<title>Top Possible Close This Week</title>
+			<xAxis>Client Deal</xAxis>
+			<yAxis>Estimated Revenue</yAxis>			
+		</labels>
+	</report>
+</reports>

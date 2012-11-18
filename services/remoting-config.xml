@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service" class="flex.messaging.services.RemotingService">
+
+	<adapters>
+		<adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true" />
+	</adapters>
+
+	<default-channels>
+		<channel ref="my-amf" />
+	</default-channels>
+
+	<destination id="userService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.UserServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="salesManagerService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.SalesManagerServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="salesForecastService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.SalesForecastServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="clientDealService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.ClientDealServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="salesActivityService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.SalesActivityServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="regionalSalesManagerService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.RegionalSalesManagerServiceImpl</source>
+		</properties>
+	</destination>
+	
+	<destination id="salesQuotaService">
+		<properties>
+			<source>com.adobe.community.adobecrm.service.impl.SalesQuotaServiceImpl</source>
+		</properties>
+	</destination>
+	
+</service>

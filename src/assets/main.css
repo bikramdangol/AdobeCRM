@@ -1,0 +1,353 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+
+/** FONT SELECTORS **/
+@font-face
+{
+	src: url( "fonts/Georgia.ttf" );
+	fontFamily: Georgia;
+	
+	advancedAntiAliasing: true; 
+	embedAsCFF: false; 
+
+}
+
+s|Application {
+	background-color: #504a4a;
+	contentBackgroundColor: #504a4a;
+	color: #ffffff;
+}
+
+mx|ToolTip {
+	color: #000000;	
+}
+
+.dragDropTileGroup
+{
+	direction: "horizontal";
+	
+	border-style: "none";
+	horizontal-align: "center";
+	vertical-align: "middle";
+	
+	padding-top: 10;
+	padding-bottom: 10;
+	padding-left: 10;
+	padding-right: 10;
+	border-thickness: 0;
+}
+
+.drillDownReport {
+	skinClass: ClassReference("assets.skins.ReportSkin");	
+}
+
+.baseChart {
+	skinClass: ClassReference("assets.skins.ChartSkin");	
+}
+
+mx|BarChart
+{
+	color: #FFFFFF;
+	
+	font-family: Georgia;
+	font-size: 12;
+	font-style: normal;
+	paddingTop:5;
+	paddingRight:5;
+	paddingBottom:5;
+	paddingLeft:5;
+	
+}
+
+mx|ColumnChart
+{
+	color: #FFFFFF;
+	
+	font-family: Georgia;
+	font-size: 12;
+	font-style: normal;
+	paddingTop:5;
+	paddingRight:5;
+	paddingBottom:5;
+	paddingLeft:5;
+	
+}
+
+mx|PieChart
+{
+	color: #FFFFFF;
+	
+	font-family: Georgia;
+	font-size: 12;
+	font-style: normal;
+	paddingTop:5;
+	paddingRight:5;
+	paddingBottom:5;
+	paddingLeft:5;
+
+}
+
+mx|LineChart
+{
+	color: #FFFFFF;
+	
+	font-family: Georgia;
+	font-size: 11;
+	font-style: normal;
+	paddingTop:5;
+	paddingRight:5;
+	paddingBottom:5;
+	paddingLeft:5;
+
+}
+
+.chartLabel {
+	label-rotation: 45;
+	font-family: Georgia;
+}
+
+mx|PieSeries {
+	fills:#a353cf, #7a7ba5, #8015f3, #7a52a5;
+}
+
+mx|LineSeries {
+	fills:#a353cf, #7a7ba5, #8015f3, #7a52a5;
+	line-stroke: 3;
+}
+
+.axisStyle {
+	placement:bottom;
+	minorTickPlacement:none;
+	tickLength:5;
+	tickPlacement:inside;
+	label-rotation: 45;
+}
+
+.ReportsDrawerRendererView
+{
+	borderStyle: solid;
+	borderThickness: 1;
+}
+
+.baseChart {
+	skin:ReportSkin;	
+}
+
+mx|DataGrid {
+	alternatingItemColors: #0d7496, #0b293b;
+	chrome-color: #898989;
+	horizontalGridLines: true;
+	verticalGridLineColor: #ffffff;
+	rollOverColor: #5aa9d9;
+	color: #ffffff;
+	headerStyleName: "mydataGridHeaderStyle";
+}
+
+mx|DataGrid.mydataGridHeaderStyle {
+	color: #ffffff;	
+}
+
+
+/** STYLE SELECTORS **/
+
+.headerTitle
+{
+	top: 30;
+	left: 180; 
+	
+	color: #000000;
+	font-anti-alias-type: normal;
+	font-family: Arial;
+	font-size: 28;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.reportTitle
+{
+	color: #FFFFFF;
+	
+	font-family: Arial;
+	font-size: 12;
+	font-style: normal;
+	padding-left: 10;
+}
+
+.tilePlaceHolderCopy
+{
+	color: #FFFFFF;
+	
+	font-family: Arial;
+	font-size: 12;
+	font-style: normal;
+	font-weight: bold;
+	
+	background-alpha: 0;
+}
+
+.tilePlaceHolderWedge
+{
+	right: 0;
+	bottom: 0;
+}
+
+.placeHolderVRule
+{
+	strokeColor: #8C8C8C;
+}
+
+.tilePlaceHolderInnerContainer
+{
+	horizontalAlign: center;
+	verticalAlign: middle;
+	horizontalGap: 5;
+}
+
+.tabularReport
+{
+	color: #FFFFFF;
+	
+	font-family: Arial;
+	font-size: 12;
+	font-style: normal;
+}
+
+.reportTray
+{
+	right: 10;
+	border-style: solid;
+	border-thickness: 1;
+	cornerRadius: 0;
+	fills: #465F73, #465F73;
+	color:#000000;
+	roll-over-color: #6f6a6a;
+	
+}
+
+.reportDrawerList
+{
+	paddingTop: 5;
+	paddingRight: 10;
+	paddingBottom: 5;
+	paddingLeft: 10;
+}
+
+.reportDrawerItemTitle
+{
+	color: #FFFFFF;
+	
+	font-family: Arial;
+	font-size: 14;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.header
+{
+	top: 0;
+	right: 0;
+	left: 0; 
+}
+
+.logo
+{
+	top: -5;
+	left: 30;
+}
+
+.reportsDrawerRendererOverlayImage
+{
+	alpha: 1;
+	top: 0;
+	right: 0;
+	left: 0;
+}
+
+.filterSliderContainer
+{
+	vertical-align: middle;
+	horizontal-align: center;
+	
+	color: #FFFFFF;
+	font-size: 10;
+	
+	padding-left: 5;
+	padding-right: 5;
+}
+
+mx|ViewStack.main
+{
+	padding-left: 30;
+	padding-right: 10;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	top: 21;
+}
+
+s|TabBar {
+	color: #000000;
+	font-weight: bold;
+}
+
+s|SkinnableContainer#ColumnChartReportView
+{
+	verticalGap: 0;
+	
+}
+
+s|SkinnableContainer#LineChartReportView
+{
+	verticalGap: 0;
+}
+
+s|SkinnableContainer#BarChartReportView
+{
+	verticalGap: 0;
+}
+
+s|SkinnableContainer#PieChartReportView
+{
+	verticalGap: 0;
+	
+}
+
+s|SkinnableContainer#TabularDataReportView
+{
+	horizontal-align: center;
+	
+}
+
+.filterSliderContainer
+{
+	vertical-align: middle;
+	horizontal-align: center;
+	padding-left: 5;
+	padding-right: 5;
+}
+
+.reportDrawerList
+{
+	paddingTop: 5;
+	paddingRight: 10;
+	paddingBottom: 5;
+	paddingLeft: 10;
+	
+	verticalAlign: "middle";
+}
+
+mx|VScrollBar {
+	cornerRadius: 0;
+/*	themeColor: #7b7d7f;*/
+	thumbOffset: 0;
+}
+
+mx|HScrollBar {
+	cornerRadius: 0;
+/*	themeColor: #7b7d7f;*/
+	thumbOffset: 0;
+}
+
+

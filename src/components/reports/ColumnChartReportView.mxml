@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component:ColumnChartReport 
+	xmlns:component="components.reports.*"
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark" 
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	width="100%"
+	height="100%"
+	styleName="baseChart">
+	
+	<fx:Metadata>
+		[ResourceBundle("crm")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import assets.skins.ChartSkin;
+			import assets.skins.ReportSkin;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:SolidColorStroke id="axisStroke"
+							color="#089ac6" 
+							weight="8" 
+							alpha=".8"
+							caps="square" />
+	</fx:Declarations>
+	
+	<mx:ColumnChart id="_chartComponent"
+					width="100%"
+					height="100%"
+					series="{chartSeries}"
+					dataProvider="{chartDataProvider}"
+					showDataTips="true"
+					dataTipFunction="dataTipFunction"
+					maxHeight="200">
+		
+		<mx:horizontalAxis>
+			<mx:CategoryAxis id="categoryAxis"
+							 title="{reportBean.xAxis}"
+							 categoryField="{reportBean.horizontalAxisField}"
+							 labelFunction="catAxisLabelFunc"
+							 dataFunction="catAxisDataFunc" />
+		</mx:horizontalAxis>
+		
+		<mx:horizontalAxisRenderers>
+			<mx:AxisRenderer axis="{categoryAxis}"
+							 showLabels="{displayLabels()}" 
+							 
+							 >
+				<mx:axisStroke>{axisStroke}</mx:axisStroke>
+			</mx:AxisRenderer>
+		</mx:horizontalAxisRenderers>
+		<mx:verticalAxis>
+			<mx:LogAxis id="linearAxis" title="{reportBean.yAxis}" />
+		</mx:verticalAxis>
+		
+		<mx:verticalAxisRenderers>
+			<mx:AxisRenderer axis="{linearAxis}"
+							 canDropLabels="true" 
+							>
+				<mx:axisStroke>{axisStroke}</mx:axisStroke>
+			</mx:AxisRenderer>
+		</mx:verticalAxisRenderers>
+		
+		<mx:backgroundElements>
+			<mx:GridLines>
+				<mx:horizontalAlternateFill>
+					<mx:SolidColor color="#0d669c" alpha="0.25" />
+				</mx:horizontalAlternateFill>
+			</mx:GridLines>
+		</mx:backgroundElements>
+		
+		
+	</mx:ColumnChart>
+	
+	<mx:HBox id="filterSliderContainer"
+			 width="100%"
+			 height="5%"
+			 includeInLayout="{reportBean.filterSlider}"
+			 visible="{reportBean.filterSlider}"
+			 styleName="filterSliderContainer"
+			 bottom="10">
+		
+		<mx:HSlider id="filterSlider"
+					showDataTip="false"
+					minimum="0"
+					maximum="4"
+					labels="['Year','QTR','2M','1M','1W']" 
+					allowTrackClick="true"
+					snapInterval="1"
+					labelOffset="-1"
+					change="setTimePeriod(event)"/>
+		
+	</mx:HBox>
+	
+</component:ColumnChartReport>

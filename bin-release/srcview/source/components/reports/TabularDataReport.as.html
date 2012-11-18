@@ -1,0 +1,149 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>TabularDataReport.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">flash</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">getDefinitionByName</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">model</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">beans</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">TabularColumn</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DataGrid</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">controls</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataGridClasses</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">DataGridColumn</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formatters</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CurrencyFormatter</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formatters</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NumberBaseRoundType</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">formatters</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NumberFormatter</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PropertyUtils</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">TabularDataReport</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">BaseChart</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">IBaseTabularReport</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptReserved">public</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dataGridComponent</span> : <span class="ActionScriptDefault_Text">DataGrid</span>;
+        
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">dataGridColumnsChanged</span> : <span class="ActionScriptDefault_Text">Boolean</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+
+        <span class="ActionScriptReserved">private</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">_dataGridColumns</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+        <span class="ActionScriptBracket/Brace">[</span><span class="ActionScriptMetadata">Bindable</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptString">"dataGridColumnsChanged"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">]</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">get</span> <span class="ActionScriptDefault_Text">dataGridColumns</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">Array</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">_dataGridColumns</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptReserved">set</span> <span class="ActionScriptDefault_Text">dataGridColumns</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">value</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">value</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptDefault_Text">dataGridColumnsChanged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+
+            <span class="ActionScriptDefault_Text">_dataGridColumns</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">value</span>;
+
+            <span class="ActionScriptDefault_Text">dispatchEvent</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Event</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptString">"dataGridColumnsChanged"</span> <span class="ActionScriptBracket/Brace">)</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptDefault_Text">invalidateProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">fillDataGridColumns</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">columns</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">columns</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">dataGridComponent</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">callLater</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">fillDataGridColumns</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptBracket/Brace">[</span> <span class="ActionScriptDefault_Text">columns</span> <span class="ActionScriptBracket/Brace">]</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptReserved">return</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">columnsLen</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">columns</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">length</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">columnClass</span> : <span class="ActionScriptDefault_Text">Object</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tabColumn</span> : <span class="ActionScriptDefault_Text">TabularColumn</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">column</span> : <span class="ActionScriptDefault_Text">DataGridColumn</span>;
+            
+
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tempColColumns</span> : <span class="ActionScriptDefault_Text">Array</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">Array</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptReserved">for</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">i</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> 0 ; <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptOperator">&lt;</span> <span class="ActionScriptDefault_Text">columnsLen</span> ; <span class="ActionScriptDefault_Text">i</span><span class="ActionScriptOperator">++</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptComment">// get the TabularColumn bean from the columns array
+</span>                <span class="ActionScriptDefault_Text">tabColumn</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">columns</span><span class="ActionScriptBracket/Brace">[</span> <span class="ActionScriptDefault_Text">i</span> <span class="ActionScriptBracket/Brace">]</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">TabularColumn</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptComment">//     get the Class reference to the columns type
+</span>                <span class="ActionScriptComment">//    or subtype to instantiate and pass to
+</span>                <span class="ActionScriptComment">//    tempcolumns
+</span>                <span class="ActionScriptDefault_Text">columnClass</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">getDefinitionByName</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tabColumn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">type</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+                <span class="ActionScriptDefault_Text">column</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">columnClass</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> <span class="ActionScriptReserved">as</span> <span class="ActionScriptDefault_Text">DataGridColumn</span>;
+                <span class="ActionScriptDefault_Text">column</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataField</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">tabColumn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataField</span>;
+                <span class="ActionScriptDefault_Text">column</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">labelFunction</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">colLabelFunc</span>;
+                <span class="ActionScriptDefault_Text">column</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">headerText</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">tabColumn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">headerText</span>;
+                <span class="ActionScriptDefault_Text">column</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">resizable</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">true</span>;
+
+                <span class="ActionScriptDefault_Text">tempColColumns</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">push</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">column</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptDefault_Text">dataGridColumns</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">tempColColumns</span>;
+            
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">colLabelFunc</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">item</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">column</span> : <span class="ActionScriptDefault_Text">DataGridColumn</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">Object</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">colLabel</span> : <span class="ActionScriptDefault_Text">Object</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">currencyFormatter</span> : <span class="ActionScriptDefault_Text">CurrencyFormatter</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">numFormatter</span> : <span class="ActionScriptDefault_Text">NumberFormatter</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">colIndex</span> : <span class="ActionScriptDefault_Text">int</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">dataGridComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columns</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">indexOf</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">column</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptvar">var</span> <span class="ActionScriptDefault_Text">tabColumn</span> : <span class="ActionScriptDefault_Text">TabularColumn</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tabularColumns</span><span class="ActionScriptBracket/Brace">[</span> <span class="ActionScriptDefault_Text">colIndex</span> <span class="ActionScriptBracket/Brace">]</span>;
+
+            <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">column</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">dataField</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptReserved">is</span> <span class="ActionScriptDefault_Text">Number</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">numFormatter</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">NumberFormatter</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">numFormatter</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">precision</span> <span class="ActionScriptOperator">=</span> 2;
+                
+                <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">numFormatter</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">format</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptBracket/Brace">)</span>;
+                
+                <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">tabColumn</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">isCurrency</span> <span class="ActionScriptBracket/Brace">)</span>
+                <span class="ActionScriptBracket/Brace">{</span>
+                    <span class="ActionScriptDefault_Text">currencyFormatter</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">new</span> <span class="ActionScriptDefault_Text">CurrencyFormatter</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                    <span class="ActionScriptDefault_Text">currencyFormatter</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">rounding</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">NumberBaseRoundType</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">NEAREST</span>;
+                    <span class="ActionScriptDefault_Text">currencyFormatter</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">precision</span> <span class="ActionScriptOperator">=</span> 0;
+    
+                    <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">currencyFormatter</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">format</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">colLabel</span> <span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">colLabel</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">commitProperties</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBeanChanged</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">reportBeanChanged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+
+                <span class="ActionScriptDefault_Text">callDataProviderCommand</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+                <span class="ActionScriptDefault_Text">fillDataGridColumns</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">_reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">tabularColumns</span> <span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">dataGridColumnsChanged</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">dataGridColumnsChanged</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptReserved">false</span>;
+
+                <span class="ActionScriptDefault_Text">dataGridComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">columns</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">dataGridColumns</span>;
+
+                <span class="ActionScriptDefault_Text">dataGridComponent</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">invalidateDisplayList</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+        <span class="ActionScriptBracket/Brace">}</span>
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

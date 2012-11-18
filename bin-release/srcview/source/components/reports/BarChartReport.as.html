@@ -1,0 +1,64 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>BarChartReport.as</title>
+<link rel="stylesheet" type="text/css" href="../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="ActionScriptpackage">package</span> <span class="ActionScriptDefault_Text">components</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">reports</span>
+<span class="ActionScriptBracket/Brace">{</span>
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">charts</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">CategoryAxis</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">mx</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">charts</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">HitData</span>;
+    
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">ChartSeriesUtils</span>;
+    <span class="ActionScriptReserved">import</span> <span class="ActionScriptDefault_Text">utils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">PropertyUtils</span>;
+
+    <span class="ActionScriptReserved">public</span> <span class="ActionScriptclass">class</span> <span class="ActionScriptDefault_Text">BarChartReport</span> <span class="ActionScriptReserved">extends</span> <span class="ActionScriptDefault_Text">BaseChart</span> <span class="ActionScriptReserved">implements</span> <span class="ActionScriptDefault_Text">IBaseChartReport</span>
+    <span class="ActionScriptBracket/Brace">{</span>
+        <span class="ActionScriptASDoc">/** MISC METHODS **/</span>
+
+        <span class="ActionScriptReserved">override</span> <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">fillChartSeries</span><span class="ActionScriptBracket/Brace">(</span><span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptReserved">void</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">drillDownChartId</span> <span class="ActionScriptOperator">==</span> 0 <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">chartSeries</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ChartSeriesUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createCartesianSeries</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">cartesianSeries</span> <span class="ActionScriptBracket/Brace">)</span>;            
+            <span class="ActionScriptBracket/Brace">}</span>
+            <span class="ActionScriptReserved">else</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptDefault_Text">chartSeries</span> <span class="ActionScriptOperator">=</span> <span class="ActionScriptDefault_Text">ChartSeriesUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">createCartesianSeries</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">cartesianSeries</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptReserved">true</span> <span class="ActionScriptBracket/Brace">)</span>;            
+            <span class="ActionScriptBracket/Brace">}</span>            
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+        <span class="ActionScriptASDoc">/**
+         *
+         * @param axis
+         * @param item
+         * @return
+         *
+         */</span>
+        <span class="ActionScriptReserved">public</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">catAxisFunc</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">axis</span> : <span class="ActionScriptDefault_Text">CategoryAxis</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> : <span class="ActionScriptDefault_Text">Object</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">Object</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">PropertyUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">parseObjectChain</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">axis</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">categoryField</span> <span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">item</span> <span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+
+        <span class="ActionScriptASDoc">/**
+         *
+         * @param hitData
+         * @return
+         *
+         */</span>
+        <span class="ActionScriptReserved">protected</span> <span class="ActionScriptfunction">function</span> <span class="ActionScriptDefault_Text">dataTipFunction</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">hitData</span> : <span class="ActionScriptDefault_Text">HitData</span> <span class="ActionScriptBracket/Brace">)</span> : <span class="ActionScriptDefault_Text">String</span>
+        <span class="ActionScriptBracket/Brace">{</span>
+            <span class="ActionScriptReserved">if</span> <span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptOperator">!</span><span class="ActionScriptDefault_Text">hitData</span> <span class="ActionScriptBracket/Brace">)</span>
+            <span class="ActionScriptBracket/Brace">{</span>
+                <span class="ActionScriptReserved">return</span> <span class="ActionScriptString">""</span>;
+            <span class="ActionScriptBracket/Brace">}</span>
+            
+            <span class="ActionScriptReserved">return</span> <span class="ActionScriptDefault_Text">ChartSeriesUtils</span><span class="ActionScriptOperator">.</span><span class="ActionScriptDefault_Text">cartesianDataTipFunction</span><span class="ActionScriptBracket/Brace">(</span> <span class="ActionScriptDefault_Text">hitData</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">chartComponent</span><span class="ActionScriptOperator">,</span> <span class="ActionScriptDefault_Text">reportBean</span><span class="ActionScriptBracket/Brace">)</span>;
+        <span class="ActionScriptBracket/Brace">}</span>
+        
+    <span class="ActionScriptBracket/Brace">}</span>
+<span class="ActionScriptBracket/Brace">}</span></pre></body>
+</html>

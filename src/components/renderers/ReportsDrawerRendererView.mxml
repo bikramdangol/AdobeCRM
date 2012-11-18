@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renderers:ReportsDrawerRenderer 
+	xmlns:renderers="components.renderers.*"
+ 	xmlns:fx="http://ns.adobe.com/mxml/2009"
+ 	xmlns:s="library://ns.adobe.com/flex/spark" 
+ 	xmlns:mx="library://ns.adobe.com/flex/mx"
+	width="245" maxWidth="245"
+	height="50"
+	>
+	
+	<fx:Script>
+		<![CDATA[
+			import utils.StaticImports;
+		]]>
+	</fx:Script>
+	
+	<renderers:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />
+	</renderers:states>
+	
+	<renderers:layout>
+		<s:BasicLayout />
+	</renderers:layout>
+
+	<mx:Image id="reportIcon"
+		source="{data.reportIcon}"
+		scaleContent="false" />
+
+	<s:Label id="reportTitle"
+		text="{data.navLabel}"
+		width="190"
+		top="{height * .5 - reportTitle.height * .5}"
+		left="{reportIcon.x + reportIcon.width + 5}"
+		styleName="reportDrawerItemTitle" />
+
+	<mx:Image id="overlayImage"
+		source="{StaticImports.reportsDrawerRendererOverlayImage}"
+		bottom="{height * .5}"
+		width="245"
+		scaleContent="false" />
+
+</renderers:ReportsDrawerRenderer>
